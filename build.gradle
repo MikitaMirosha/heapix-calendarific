@@ -1,16 +1,40 @@
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
-    ext.kotlin_version = "1.4.21"
+
+    // kotlin
+    ext.kotlin_version = '1.4.30'
+
+    // joda time
+    ext.joda_version = '2.10.6'
+
+    // fragment navigation
+    ext.fragment_nav_version = '3.2.0'
+
+    // moxy
+    ext.moxy_version = '1.5.6'
+
+    // reactive
+    ext.rx_java2_version = '2.2.20'
+    ext.rx_android_version = '2.1.1'
+    ext.rx_view_binding_version = '3.1.0'
+
+    // di
+    ext.kodein_version = '7.0.0'
+    ext.kodein_version_android = '7.0.0'
+
+    // http3
+    ext.http3_version = '4.9.0'
+    ext.http3_logging_interceptor = '4.9.0'
+
+    // api
+    ext.retrofit_version = '2.9.0'
+
     repositories {
         google()
         jcenter()
     }
     dependencies {
-        classpath "com.android.tools.build:gradle:4.1.0"
+        classpath "com.android.tools.build:gradle:4.1.2"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
     }
 }
 
