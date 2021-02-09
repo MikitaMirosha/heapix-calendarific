@@ -31,8 +31,7 @@ class MyApp : Application() {
             HolidaysRepo(
                 instance<Retrofit>().create(
                     HolidaysService::class.java
-                ),
-                instance()
+                )
             )
         }
     }

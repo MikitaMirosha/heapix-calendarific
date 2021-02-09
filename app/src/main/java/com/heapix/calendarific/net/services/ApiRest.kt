@@ -44,9 +44,17 @@ class ApiRest {
                     level = HttpLoggingInterceptor.Level.BODY
                 })
                 .addInterceptor { chain ->
-                    val request = chain.request()
-                    val response = chain.proceed(request)
-                    response
+                    val request = chain.request().newBuilder()
+                    val originalHttpUrl = chain.request().url
+                    val url = originalHttpUrl
+                        .newBuilder()
+                        .addQueryParameter(
+                            "api_key",
+                            "284ff11936b12dcf843b42ad9bafd689f786ffbf"
+                        )
+                        .build()
+                    request.url(url)
+                    return@addInterceptor chain.proceed(request.build())
                 }
                 .addNetworkInterceptor(Interceptor { chain ->
                     val requestBuilder = chain.request().newBuilder()

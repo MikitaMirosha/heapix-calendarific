@@ -1,8 +1,9 @@
 package com.heapix.calendarific.ui.holidays
 
+import android.util.Log
 import com.arellomobile.mvp.InjectViewState
 import com.heapix.calendarific.MyApp
-import com.heapix.calendarific.model.Holidays
+import com.heapix.calendarific.model.HolidayModel
 import com.heapix.calendarific.net.repo.HolidaysRepo
 import com.heapix.calendarific.ui.base.BaseMvpPresenter
 import io.reactivex.Observable
@@ -12,11 +13,10 @@ import org.kodein.di.instance
 class HolidaysPresenter : BaseMvpPresenter<HolidaysView>() {
 
     private val holidaysRepo: HolidaysRepo by MyApp.kodein.instance()
-    private lateinit var holidaysModelList: MutableList<Holidays>
+    private lateinit var holidayModelList: MutableList<HolidayModel>
 
-    fun onCreate(holidaysItemClickObservable: Observable<Holidays>) {
+    fun onCreate(holidayItemClickObservable: Observable<HolidayModel>) {
         getHolidaysAndUpdateUi()
-//        setupOnHolidaysItemClickListener(holidaysItemClickObservable)
     }
 
     private fun getHolidaysAndUpdateUi() {
@@ -26,28 +26,13 @@ class HolidaysPresenter : BaseMvpPresenter<HolidaysView>() {
                 .observeOn(schedulers.ui())
                 .subscribe(
                     {
-                        holidaysModelList = it
+                        holidayModelList = it
                         viewState.updateHolidays(it)
                     }, {
-
+                        Log.e("TAG", it.toString())
                     }
                 )
         )
     }
-
-//    private fun setupOnHolidaysItemClickListener(holidaysItemClickObservable: Observable<Holidays>) {
-//        addDisposable(
-//            holidaysItemClickObservable
-//                .subscribeOn(schedulers.io())
-//                .observeOn(schedulers.ui())
-//                .subscribe(
-//                    {
-//
-//                    }, {
-//
-//                    }
-//                )
-//        )
-//    }
 
 }

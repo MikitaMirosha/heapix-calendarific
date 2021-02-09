@@ -8,64 +8,74 @@
     android:layout_marginEnd="@dimen/dp_10"
     android:layout_marginBottom="@dimen/dp_10"
     card_view:cardBackgroundColor="@color/white"
-    card_view:cardCornerRadius="@dimen/dp_10">
+    card_view:cardCornerRadius="@dimen/dp_14">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/vTvHolidaysName"
-            android:layout_width="0dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/dp_10"
-            android:layout_marginTop="@dimen/dp_4"
-            android:layout_weight="1"
-            android:fontFamily="@font/ptsans"
-            android:textColor="@color/black"
-            android:textSize="@dimen/sp_24"
-            android:textStyle="bold"
-            tools:text="Name" />
+            android:orientation="horizontal">
 
-        <ImageView
-            android:layout_width="wrap_content"
+            <TextView
+                android:id="@+id/vTvHolidaysName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_10"
+                android:layout_marginTop="@dimen/dp_10"
+                android:layout_marginEnd="@dimen/dp_10"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:fontFamily="@font/ptsans"
+                android:maxLines="1"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_18"
+                android:textStyle="bold"
+                tools:text="Name" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_10"
+                android:layout_marginEnd="@dimen/dp_10"
+                android:src="@drawable/ic_checked" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_8"
-            android:layout_marginEnd="@dimen/dp_10"
-            android:src="@drawable/ic_world" />
+            android:orientation="vertical">
 
-    </LinearLayout>
+            <TextView
+                android:id="@+id/vTvHolidaysDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_10"
+                android:layout_marginTop="@dimen/dp_4"
+                android:fontFamily="@font/ptsans"
+                android:textColor="@color/purple"
+                android:textSize="@dimen/sp_14"
+                android:textStyle="bold"
+                tools:text="Date" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingTop="@dimen/dp_36">
+            <TextView
+                android:id="@+id/vTvHolidaysDescription"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/dp_10"
+                android:ellipsize="end"
+                android:fontFamily="@font/ptsans"
+                android:maxLines="1"
+                android:textColor="@color/gray"
+                android:textSize="@dimen/sp_12"
+                android:textStyle="bold"
+                tools:text="Description" />
 
-        <TextView
-            android:id="@+id/vTvHolidaysDate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/dp_10"
-            android:fontFamily="@font/ptsans"
-            android:textColor="@color/black"
-            android:textSize="@dimen/sp_24"
-            android:textStyle="bold"
-            tools:text="Date" />
-
-        <TextView
-            android:id="@+id/vTvHolidaysDescription"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/dp_10"
-            android:layout_marginBottom="@dimen/dp_4"
-            android:ellipsize="end"
-            android:fontFamily="@font/ptsans"
-            android:maxLines="2"
-            android:textColor="@color/gray"
-            android:textSize="@dimen/sp_16"
-            tools:text="Description" />
+        </LinearLayout>
 
     </LinearLayout>
 

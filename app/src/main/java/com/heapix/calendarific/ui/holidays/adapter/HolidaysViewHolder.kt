@@ -1,7 +1,7 @@
 package com.heapix.calendarific.ui.holidays.adapter
 
 import android.view.View
-import com.heapix.calendarific.model.Holidays
+import com.heapix.calendarific.model.HolidayModel
 import com.heapix.calendarific.ui.base.adapters.BaseViewHolder
 import io.reactivex.subjects.PublishSubject
 import kotlinx.android.synthetic.main.item_holiday.*
@@ -10,33 +10,33 @@ import org.joda.time.format.DateTimeFormat
 
 class HolidaysViewHolder(
     itemView: View,
-    private val holidaysPublishSubject: PublishSubject<Holidays>
-) : BaseViewHolder<Holidays>(itemView) {
+    private val holidayPublishSubject: PublishSubject<HolidayModel>
+) : BaseViewHolder<HolidayModel>(itemView) {
 
-    override fun bind(model: Holidays) {
+    override fun bind(model: HolidayModel) {
         setupHolidaysName(model)
         setupHolidaysDate(model)
         setupHolidaysDescription(model)
         setupClickListener(model)
     }
 
-    private fun setupHolidaysName(holidays: Holidays) {
-        vTvHolidaysName.text = (holidays as Holidays.Details).detailsModel?.name
+    private fun setupHolidaysName(holidayModel: HolidayModel) {
+        vTvHolidaysName.text = holidayModel.name
     }
 
-    private fun setupHolidaysDate(holidays: Holidays) {
-        val parser = DateTime((holidays as Holidays.Details).detailsModel?.date)
-        val formatter = DateTimeFormat.forPattern("d MMM, yyyy")
+    private fun setupHolidaysDate(holidayModel: HolidayModel) {
+        val parser = DateTime(holidayModel.date?.iso)
+        val formatter = DateTimeFormat.forPattern("d MMM yyyy")
         vTvHolidaysDate.text = parser.toString(formatter)
     }
 
-    private fun setupHolidaysDescription(holidays: Holidays) {
-        vTvHolidaysDescription.text = (holidays as Holidays.Details).detailsModel?.description
+    private fun setupHolidaysDescription(holidayModel: HolidayModel) {
+        vTvHolidaysDescription.text = holidayModel.description
     }
 
-    private fun setupClickListener(holidays: Holidays) {
+    private fun setupClickListener(holidayModel: HolidayModel) {
         setOnClickListener {
-            holidaysPublishSubject.onNext(holidays)
+            holidayPublishSubject.onNext(holidayModel)
         }
     }
 
