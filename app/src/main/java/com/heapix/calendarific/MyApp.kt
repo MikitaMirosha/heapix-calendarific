@@ -2,9 +2,12 @@ package com.heapix.calendarific
 
 import android.app.Application
 import android.content.SharedPreferences
-import com.heapix.calendarific.net.repo.HolidaysRepo
+import com.heapix.calendarific.net.repo.CountryRepo
+import com.heapix.calendarific.net.repo.HolidayRepo
+import com.heapix.calendarific.net.repo.YearRepo
 import com.heapix.calendarific.net.services.ApiRest
-import com.heapix.calendarific.net.services.HolidaysService
+import com.heapix.calendarific.net.services.CountryService
+import com.heapix.calendarific.net.services.HolidayService
 import com.heapix.calendarific.utils.pref.PreferencesUtils
 import com.heapix.calendarific.utils.rx.AppSchedulerProvider
 import com.heapix.calendarific.utils.rx.SchedulerProvider
@@ -27,13 +30,24 @@ class MyApp : Application() {
 
         bind<SchedulerProvider>() with singleton { AppSchedulerProvider() }
 
-        bind<HolidaysRepo>() with singleton {
-            HolidaysRepo(
+        bind<HolidayRepo>() with singleton {
+            HolidayRepo(
                 instance<Retrofit>().create(
-                    HolidaysService::class.java
+                    HolidayService::class.java
                 )
             )
         }
+
+        bind<CountryRepo>() with singleton {
+            CountryRepo(
+                instance<Retrofit>().create(
+                    CountryService::class.java
+                ),
+                instance()
+            )
+        }
+
+        bind<YearRepo>() with singleton { YearRepo(instance()) }
     }
 
     companion object {

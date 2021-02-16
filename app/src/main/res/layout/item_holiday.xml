@@ -11,6 +11,7 @@
     card_view:cardCornerRadius="@dimen/dp_14">
 
     <LinearLayout
+        android:id="@+id/vLlHolidayCard"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -21,7 +22,7 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/vTvHolidaysName"
+                android:id="@+id/vTvHolidayName"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/dp_10"
@@ -51,7 +52,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/vTvHolidaysDate"
+                android:id="@+id/vTvHolidayDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/dp_10"
@@ -63,7 +64,7 @@
                 tools:text="Date" />
 
             <TextView
-                android:id="@+id/vTvHolidaysDescription"
+                android:id="@+id/vTvHolidayDescription"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/dp_10"

@@ -4,4 +4,11 @@
     <string name="home">home</string>
     <string name="calendar">calendar</string>
     <string name="world">world</string>
+
+    <string name="country">Country</string>
+    <string name="year">Year</string>
+
+    <string name="select_country_and_year">Please, select desired country and year</string>
+
+    <string name="press_back_again_to_exit">Press back again to exit</string>
 </resources>

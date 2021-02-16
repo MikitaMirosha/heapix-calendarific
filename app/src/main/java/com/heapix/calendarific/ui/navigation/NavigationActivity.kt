@@ -1,14 +1,16 @@
 package com.heapix.calendarific.ui.navigation
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.heapix.calendarific.R
+import com.heapix.calendarific.ui.base.BaseMvpActivity
 import com.heapix.calendarific.ui.calendar.CalendarFragment
 import com.heapix.calendarific.ui.holidays.HolidaysFragment
 import com.heapix.calendarific.ui.world.WorldFragment
-import com.heapix.calendarific.ui.base.BaseMvpActivity
 import com.ncapdevi.fragnav.FragNavController
 import com.ncapdevi.fragnav.FragNavTransactionOptions
 import kotlinx.android.synthetic.main.activity_navigation.*
@@ -17,6 +19,8 @@ class NavigationActivity : BaseMvpActivity(), NavigationView {
 
     @InjectPresenter
     lateinit var navigationPresenter: NavigationPresenter
+
+    private var isOnDoubleBackPressed = false
 
     override fun getLayoutId() = R.layout.activity_navigation
 
@@ -71,6 +75,29 @@ class NavigationActivity : BaseMvpActivity(), NavigationView {
     }
 
     fun navigateToFragment(fragment: Fragment) = fragNavController.pushFragment(fragment)
+
+    private fun onDoubleBackPressed() {
+        if (isOnDoubleBackPressed) {
+            super.onBackPressed()
+            return
+        }
+
+        this.isOnDoubleBackPressed = true
+        showMessage(R.string.press_back_again_to_exit)
+
+        Handler(Looper.getMainLooper()).postDelayed(
+            { isOnDoubleBackPressed = false },
+            2000
+        )
+    }
+
+    override fun onBackPressed() {
+        if (fragNavController.isRootFragment) {
+            onDoubleBackPressed()
+        } else {
+            fragNavController.popFragment()
+        }
+    }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
