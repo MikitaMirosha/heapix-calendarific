@@ -1,4 +1,4 @@
-package com.heapix.calendarific.ui.holidays.adapter
+package com.heapix.calendarific.ui.holidays.adapter.year
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -8,7 +8,7 @@ import com.heapix.calendarific.ui.base.adapters.BaseViewHolder
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 
-class YearsAdapter : BaseListAdapter<Int>() {
+class YearAdapter : BaseListAdapter<Int>() {
 
     private val yearPublishSubject: PublishSubject<Int> = PublishSubject.create()
     val yearItemClickObservable: Observable<Int> = yearPublishSubject
@@ -17,7 +17,7 @@ class YearsAdapter : BaseListAdapter<Int>() {
         parent: ViewGroup,
         viewType: Int
     ): BaseViewHolder<Int> {
-        return YearsViewHolder(
+        return YearViewHolder(
             LayoutInflater.from(parent.context)
                 .inflate(R.layout.item_holiday_parameter, parent, false),
             yearPublishSubject

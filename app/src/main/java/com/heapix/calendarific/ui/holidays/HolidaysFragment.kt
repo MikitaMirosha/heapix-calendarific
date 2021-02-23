@@ -4,38 +4,44 @@ import android.view.View
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.heapix.calendarific.R
-import com.heapix.calendarific.net.responses.country.CountryDetailsResponse
-import com.heapix.calendarific.net.responses.holiday.HolidayDetailsResponse
+import com.heapix.calendarific.net.responses.country.CountryResponse
+import com.heapix.calendarific.net.responses.holiday.HolidayResponse
 import com.heapix.calendarific.ui.base.BaseMvpFragment
-import com.heapix.calendarific.ui.holidays.adapter.CountriesAdapter
-import com.heapix.calendarific.ui.holidays.adapter.HolidaysAdapter
-import com.heapix.calendarific.ui.holidays.adapter.YearsAdapter
+import com.heapix.calendarific.ui.holidays.adapter.country.CountryAdapter
+import com.heapix.calendarific.ui.holidays.adapter.holiday.HolidayAdapter
+import com.heapix.calendarific.ui.holidays.adapter.year.YearAdapter
 import com.heapix.calendarific.utils.view.hide
 import com.heapix.calendarific.utils.view.show
+import com.insspring.poifox.utils.SimpleTextWatcher
+import kotlinx.android.synthetic.main.activity_navigation.*
 import kotlinx.android.synthetic.main.fragment_holidays.*
+import kotlinx.android.synthetic.main.view_holiday_parameters.*
+import kotlinx.android.synthetic.main.view_number_picker.*
+import kotlinx.android.synthetic.main.view_selection.*
+
 
 class HolidaysFragment : BaseMvpFragment(), HolidaysView {
 
     @InjectPresenter
     lateinit var holidaysPresenter: HolidaysPresenter
 
-    lateinit var holidaysAdapter: HolidaysAdapter
-    lateinit var countriesAdapter: CountriesAdapter
-    lateinit var yearsAdapter: YearsAdapter
+    private lateinit var holidayAdapter: HolidayAdapter
+    private lateinit var countryAdapter: CountryAdapter
+    private lateinit var yearAdapter: YearAdapter
 
-    lateinit var bottomSheetBehavior: BottomSheetBehavior<*>
+    private lateinit var bottomSheetBehavior: BottomSheetBehavior<*>
 
     override fun getLayoutId(): Int = R.layout.fragment_holidays
 
     override fun onViewCreated(view: View) {
         initListeners()
-        setupHolidaysAdapter()
-        setupCountriesAdapter()
-        setupYearsAdapter()
+        setupHolidayAdapter()
+        setupCountryAdapter()
+        setupYearAdapter()
         holidaysPresenter.onCreate(
-            holidaysAdapter.holidayItemClickObservable,
-            countriesAdapter.countryItemClickObservable,
-            yearsAdapter.yearItemClickObservable
+            holidayAdapter.holidayResponseItemClickObservable,
+            countryAdapter.countryResponseItemClickObservable,
+            yearAdapter.yearItemClickObservable
         )
     }
 
@@ -53,53 +59,57 @@ class HolidaysFragment : BaseMvpFragment(), HolidaysView {
         }
     }
 
-    private fun setupHolidaysAdapter() {
-        holidaysAdapter = HolidaysAdapter()
-        vRvHolidayList.adapter = holidaysAdapter
+    private fun setupHolidayAdapter() {
+        holidayAdapter = HolidayAdapter()
+        vRvHolidayList.adapter = holidayAdapter
     }
 
-    private fun setupCountriesAdapter() {
-        countriesAdapter = CountriesAdapter()
-        vRvCountryList.adapter = countriesAdapter
+    private fun setupCountryAdapter() {
+        countryAdapter = CountryAdapter()
+        vRvCountryList.adapter = countryAdapter
     }
 
-    private fun setupYearsAdapter() {
-        yearsAdapter = YearsAdapter()
-        vRvYearList.adapter = yearsAdapter
+
+    private fun setupYearAdapter() {
+        yearAdapter = YearAdapter()
+        vRvYearList.adapter = yearAdapter
     }
 
-    override fun updateHolidays(holidayDetailsResponseList: MutableList<HolidayDetailsResponse>) {
-        holidaysAdapter.setItems(holidayDetailsResponseList)
+    override fun updateHolidays(holidayResponseList: MutableList<HolidayResponse>) {
+        holidayAdapter.setItems(holidayResponseList)
     }
 
-    override fun updateCountries(countryDetailsResponseList: MutableList<CountryDetailsResponse>) {
-        countriesAdapter.setItems(countryDetailsResponseList)
+    override fun updateCountries(countryResponseList: MutableList<CountryResponse>) {
+        countryAdapter.setItems(countryResponseList)
     }
 
     override fun updateYears(yearList: MutableList<Int>) {
-        yearsAdapter.setItems(yearList)
+        yearAdapter.setItems(yearList)
     }
 
     override fun showCountryListBottomSheet() {
         vLlYearBottomSheet.hide()
-        vLlCountryBottomSheet.show()
-        bottomSheetBehavior = BottomSheetBehavior.from(vLlCountryBottomSheet)
+        vLlBottomSheetView.show()
+        bottomSheetBehavior = BottomSheetBehavior.from(vLlBottomSheetView)
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
     }
 
     override fun showYearListBottomSheet() {
-        vLlCountryBottomSheet.hide()
+        vLlBottomSheetView.hide()
         vLlYearBottomSheet.show()
         bottomSheetBehavior = BottomSheetBehavior.from(vLlYearBottomSheet)
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
     }
 
-    override fun showSelectCountryAndYear() {
-        vTvSelectCountryAndYear.show()
+    override fun showCurrentCountryName(countryName: String?) {
+        vTvCountry.text = countryName
     }
 
-    override fun hideSelectCountryAndYear() {
-        vTvSelectCountryAndYear.hide()
+    override fun showCurrentYear() {
+        vTvYear.text = holidaysPresenter.getYear().toString()
     }
 
+    override fun updateHolidayStatusImage() {
+
+    }
 }

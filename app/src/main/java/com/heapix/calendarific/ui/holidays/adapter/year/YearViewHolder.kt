@@ -1,11 +1,11 @@
-package com.heapix.calendarific.ui.holidays.adapter
+package com.heapix.calendarific.ui.holidays.adapter.year
 
 import android.view.View
 import com.heapix.calendarific.ui.base.adapters.BaseViewHolder
 import io.reactivex.subjects.PublishSubject
 import kotlinx.android.synthetic.main.item_holiday_parameter.*
 
-class YearsViewHolder(
+class YearViewHolder(
     itemView: View,
     private val yearPublishSubject: PublishSubject<Int>
 ) : BaseViewHolder<Int>(itemView) {

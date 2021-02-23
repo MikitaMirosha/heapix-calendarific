@@ -50,7 +50,7 @@ class ApiRest {
                         .newBuilder()
                         .addQueryParameter(
                             "api_key",
-                            "284ff11936b12dcf843b42ad9bafd689f786ffbf"
+                            "83cda4d42f0fdb0cd6d6645fdaa23a1e446e0df1"
                         )
                         .build()
                     request.url(url)

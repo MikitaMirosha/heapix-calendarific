@@ -1,28 +1,29 @@
-package com.heapix.calendarific.ui.holidays.adapter
+package com.heapix.calendarific.ui.holidays.adapter.holiday
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.heapix.calendarific.R
-import com.heapix.calendarific.net.responses.holiday.HolidayDetailsResponse
+import com.heapix.calendarific.net.responses.holiday.HolidayResponse
 import com.heapix.calendarific.ui.base.adapters.BaseListAdapter
 import com.heapix.calendarific.ui.base.adapters.BaseViewHolder
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 
-class HolidaysAdapter : BaseListAdapter<HolidayDetailsResponse>() {
+class HolidayAdapter : BaseListAdapter<HolidayResponse>() {
 
-    private val holidayPublishSubject: PublishSubject<HolidayDetailsResponse> =
+    private val holidayResponsePublishSubject: PublishSubject<HolidayResponse> =
         PublishSubject.create()
-    val holidayItemClickObservable: Observable<HolidayDetailsResponse> = holidayPublishSubject
+    val holidayResponseItemClickObservable: Observable<HolidayResponse> =
+        holidayResponsePublishSubject
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): BaseViewHolder<HolidayDetailsResponse> {
-        return HolidaysViewHolder(
+    ): BaseViewHolder<HolidayResponse> {
+        return HolidayViewHolder(
             LayoutInflater.from(parent.context)
                 .inflate(R.layout.item_holiday, parent, false),
-            holidayPublishSubject
+            holidayResponsePublishSubject
         )
     }
 

@@ -6,10 +6,11 @@ import com.heapix.calendarific.MyApp
 import com.heapix.calendarific.net.repo.CountryRepo
 import com.heapix.calendarific.net.repo.HolidayRepo
 import com.heapix.calendarific.net.repo.YearRepo
-import com.heapix.calendarific.net.responses.country.CountryDetailsResponse
-import com.heapix.calendarific.net.responses.holiday.HolidayDetailsResponse
+import com.heapix.calendarific.net.responses.country.CountryResponse
+import com.heapix.calendarific.net.responses.holiday.HolidayResponse
 import com.heapix.calendarific.ui.base.BaseMvpPresenter
 import io.reactivex.Observable
+import org.joda.time.LocalDate
 import org.kodein.di.instance
 
 @InjectViewState
@@ -19,53 +20,30 @@ class HolidaysPresenter : BaseMvpPresenter<HolidaysView>() {
     private val countryRepo: CountryRepo by MyApp.kodein.instance()
     private val yearRepo: YearRepo by MyApp.kodein.instance()
 
+    private lateinit var countryResponseList: MutableList<CountryResponse>
+
     fun onCreate(
-        holidayItemClickObservable: Observable<HolidayDetailsResponse>,
-        countryItemClickObservable: Observable<CountryDetailsResponse>,
-        yearItemClickListener: Observable<Int>
+        holidayResponseItemClickObservable: Observable<HolidayResponse>,
+        countryResponseItemClickObservable: Observable<CountryResponse>,
+        yearItemClickObservable: Observable<Int>
     ) {
-        checkCountryAndYearInSharedPreferences()
-        getHolidaysAndUpdateUi(
-            getCountryFromSharedPreferences() ?: "",
-            getYearFromSharedPreferences()
-        )
+        getHolidaysAndUpdateUi()
         getCountriesAndUpdateUi()
         getYearsAndUpdateUi()
-        setupOnHolidayItemClickListener(holidayItemClickObservable)
-        setupOnCountryItemClickListener(countryItemClickObservable)
-        setupOnYearItemClickListener(yearItemClickListener)
+        setupOnHolidayResponseItemClickListener(holidayResponseItemClickObservable)
+        setupOnCountryResponseItemClickListener(countryResponseItemClickObservable)
+        setupOnYearItemClickListener(yearItemClickObservable)
     }
 
-    private fun getCountryFromSharedPreferences(): String? =
-        countryRepo.getCountryFromSharedPreferences()
-
-    private fun saveCountryToSharedPreferences(country: String?) =
-        countryRepo.saveCountryToSharedPreferences(country)
-
-    private fun getYearFromSharedPreferences(): Int =
-        yearRepo.getYearFromSharedPreferences()
-
-    private fun saveYearToSharedPreferences(year: Int) =
-        yearRepo.saveYearToSharedPreferences(year)
-
-    private fun isCountryInSharedPreferences(): Boolean = getCountryFromSharedPreferences() != ""
-
-    private fun isYearInSharedPreferences(): Boolean = getYearFromSharedPreferences() != 0
-
-    private fun checkCountryAndYearInSharedPreferences() {
-        if (!isCountryInSharedPreferences() && !isYearInSharedPreferences()) {
-            viewState.showSelectCountryAndYear()
-        }
-    }
-
-    private fun getHolidaysAndUpdateUi(iso: String, year: Int) {
+    private fun getHolidaysAndUpdateUi() {
         addDisposable(
-            holidayRepo.getAllHolidays(iso, year)
+            holidayRepo.getAllHolidays(getIso() ?: "", getYear())
                 .subscribeOn(schedulers.io())
                 .observeOn(schedulers.ui())
                 .subscribe(
                     {
-                        viewState.hideSelectCountryAndYear()
+//                        viewState.hideSelectCountryAndYear()
+                        viewState.updateHolidayStatusImage()
                         viewState.updateHolidays(it)
                     }, {
                         Log.e("TAG", it.toString())
@@ -81,6 +59,7 @@ class HolidaysPresenter : BaseMvpPresenter<HolidaysView>() {
                 .observeOn(schedulers.ui())
                 .subscribe(
                     {
+                        countryResponseList = it
                         viewState.updateCountries(it)
                     }, {
                         Log.e("TAG", it.toString())
@@ -93,9 +72,9 @@ class HolidaysPresenter : BaseMvpPresenter<HolidaysView>() {
         viewState.updateYears(yearRepo.getAllYears())
     }
 
-    private fun setupOnHolidayItemClickListener(holidayItemClickObservable: Observable<HolidayDetailsResponse>) {
+    private fun setupOnHolidayResponseItemClickListener(holidayResponseItemClickObservable: Observable<HolidayResponse>) {
         addDisposable(
-            holidayItemClickObservable
+            holidayResponseItemClickObservable
                 .subscribeOn(schedulers.io())
                 .observeOn(schedulers.ui())
                 .subscribe(
@@ -108,15 +87,16 @@ class HolidaysPresenter : BaseMvpPresenter<HolidaysView>() {
         )
     }
 
-    private fun setupOnCountryItemClickListener(countryItemClickObservable: Observable<CountryDetailsResponse>) {
+    private fun setupOnCountryResponseItemClickListener(countryResponseItemClickObservable: Observable<CountryResponse>) {
         addDisposable(
-            countryItemClickObservable
+            countryResponseItemClickObservable
                 .subscribeOn(schedulers.io())
                 .observeOn(schedulers.ui())
                 .subscribe(
                     {
-                        getHolidaysAndUpdateUi(it.iso ?: "", getYearFromSharedPreferences())
-                        saveCountryToSharedPreferences(it.iso)
+                        getHolidaysAndUpdateUi()
+                        saveIso(it.iso)
+                        viewState.showCurrentCountryName(it.countryName)
                         showMessage("Selected country is " + it.iso)
                     }, {
                         Log.e("TAG", it.toString())
@@ -132,9 +112,10 @@ class HolidaysPresenter : BaseMvpPresenter<HolidaysView>() {
                 .observeOn(schedulers.ui())
                 .subscribe(
                     {
-                        getHolidaysAndUpdateUi(getCountryFromSharedPreferences() ?: "", it)
-                        saveYearToSharedPreferences(it)
-                        showMessage("Selected year is  $it")
+                        getHolidaysAndUpdateUi()
+                        saveYear(it)
+                        viewState.showCurrentYear()
+                        showMessage("Selected year is $it")
                     }, {
                         Log.e("TAG", it.toString())
                     }
@@ -142,8 +123,22 @@ class HolidaysPresenter : BaseMvpPresenter<HolidaysView>() {
         )
     }
 
+    private fun getIso(): String? = countryRepo.getIso()
+
+    fun getYear(): Int = yearRepo.getYear()
+
+    private fun saveIso(iso: String?) = countryRepo.saveIso(iso)
+
+    private fun saveYear(year: Int) = yearRepo.saveYear(year)
+
     fun onCountryTextClicked() = viewState.showCountryListBottomSheet()
 
     fun onYearTextClicked() = viewState.showYearListBottomSheet()
+
+    private fun getLocalDate() = LocalDate()
+
+//    private fun isHolidayPassed(): Boolean {
+//        holidayRepo.getHolidayDate()
+//    }
 
 }

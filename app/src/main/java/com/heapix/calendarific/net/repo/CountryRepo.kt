@@ -1,9 +1,9 @@
 package com.heapix.calendarific.net.repo
 
 import android.content.SharedPreferences
-import com.heapix.calendarific.net.responses.country.CountryDetailsResponse
+import com.heapix.calendarific.net.responses.country.CountryResponse
 import com.heapix.calendarific.net.services.CountryService
-import com.heapix.calendarific.utils.pref.country
+import com.heapix.calendarific.utils.pref.iso
 import io.reactivex.Observable
 
 class CountryRepo(
@@ -11,17 +11,17 @@ class CountryRepo(
     private val sharedPreferences: SharedPreferences
 ) {
 
-    fun getAllCountries(): Observable<MutableList<CountryDetailsResponse>> {
+    fun getAllCountries(): Observable<MutableList<CountryResponse>> {
         return api.getAllCountries().map { holidayCommonResponse ->
-            holidayCommonResponse.response?.countries?.map { countryDetailsResponse ->
-                countryDetailsResponse
+            holidayCommonResponse.response?.countries?.map { countryResponse ->
+                countryResponse
             }?.toMutableList()
         }
     }
 
-    fun getCountryFromSharedPreferences(): String? = sharedPreferences.country
+    fun getIso(): String? = sharedPreferences.iso
 
-    fun saveCountryToSharedPreferences(country: String?) {
-        sharedPreferences.country = country
+    fun saveIso(iso: String?) {
+        sharedPreferences.iso = iso
     }
 }

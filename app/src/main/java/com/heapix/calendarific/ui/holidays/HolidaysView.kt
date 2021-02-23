@@ -1,15 +1,16 @@
 package com.heapix.calendarific.ui.holidays
 
-import com.heapix.calendarific.net.responses.country.CountryDetailsResponse
-import com.heapix.calendarific.net.responses.holiday.HolidayDetailsResponse
+import com.heapix.calendarific.net.responses.country.CountryResponse
+import com.heapix.calendarific.net.responses.holiday.HolidayResponse
 import com.heapix.calendarific.ui.base.BaseMvpView
 
 interface HolidaysView : BaseMvpView {
-    fun updateHolidays(holidayDetailsResponseList: MutableList<HolidayDetailsResponse>)
-    fun updateCountries(countryDetailsResponseList: MutableList<CountryDetailsResponse>)
+    fun updateHolidays(holidayResponseList: MutableList<HolidayResponse>)
+    fun updateCountries(countryResponseList: MutableList<CountryResponse>)
     fun updateYears(yearList: MutableList<Int>)
     fun showCountryListBottomSheet()
     fun showYearListBottomSheet()
-    fun showSelectCountryAndYear()
-    fun hideSelectCountryAndYear()
+    fun showCurrentCountryName(countryName: String?)
+    fun showCurrentYear()
+    fun updateHolidayStatusImage()
 }

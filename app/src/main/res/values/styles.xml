@@ -5,17 +5,27 @@
         <item name="colorPrimary">@color/black</item>
         <item name="colorPrimaryDark">@color/black</item>
         <item name="colorAccent">@color/black</item>
+        <item name="android:textViewStyle">@style/PtSansTextViewStyle</item>
         <item name="android:splitMotionEvents">false</item>
         <item name="android:windowEnableSplitTouch">false</item>
+    </style>
+
+    <style name="PtSansTextViewStyle" parent="android:Widget.TextView">
+        <item name="android:fontFamily">@font/ptsans</item>
     </style>
 
     <style name="TopTextView">
         <item name="android:textSize">@dimen/sp_18</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/black</item>
-        <item name="android:fontFamily">@font/ptsans</item>
         <item name="android:layout_marginTop">@dimen/dp_14</item>
         <item name="android:layout_marginBottom">@dimen/dp_14</item>
+    </style>
+
+    <style name="DialogTheme" parent="Theme.AppCompat.Light.Dialog">
+        <item name="colorAccent">@color/black</item>
+        <item name="android:minDate">2000</item>
+        <item name="android:maxDate">2049</item>
     </style>
 
 </resources>

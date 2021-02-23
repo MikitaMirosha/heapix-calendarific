@@ -92,6 +92,8 @@ dependencies {
     implementation "com.squareup.retrofit2:converter-scalars:$retrofit_version"
     implementation "com.squareup.okhttp3:logging-interceptor:$http3_logging_interceptor"
     implementation "com.squareup.okhttp3:okhttp:$http3_version"
-    implementation "com.mindorks.android:prdownloader:0.6.0"
+    implementation "com.mindorks.android:prdownloader:$prdownloader_version"
 
+    // month and year picker
+    implementation "com.whiteelephant:monthandyearpicker:$monthandyearpicker_version"
 }

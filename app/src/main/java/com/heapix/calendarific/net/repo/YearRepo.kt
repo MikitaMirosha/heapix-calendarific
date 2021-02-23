@@ -7,9 +7,9 @@ class YearRepo(private val sharedPreferences: SharedPreferences) {
 
     fun getAllYears(): MutableList<Int> = (2000..2049).toMutableList()
 
-    fun getYearFromSharedPreferences(): Int = sharedPreferences.year
+    fun getYear(): Int = sharedPreferences.year
 
-    fun saveYearToSharedPreferences(year: Int) {
+    fun saveYear(year: Int) {
         sharedPreferences.year = year
     }
 }
