@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <declare-styleable name="SelectionView">
-        <attr name="isSelectionView" format="boolean" />
-    </declare-styleable>
-
     <declare-styleable name="BottomSheetLayout">
         <attr name="collapsedHeight" format="dimension" />
     </declare-styleable>

@@ -11,10 +11,10 @@ import io.reactivex.subjects.PublishSubject
 
 class CountryAdapter : BaseListAdapter<CountryResponse>() {
 
-    private val countryResponsePublishSubject: PublishSubject<CountryResponse> =
+    private val countryPublishSubject: PublishSubject<CountryResponse> =
         PublishSubject.create()
-    val countryResponseItemClickObservable: Observable<CountryResponse> =
-        countryResponsePublishSubject
+    val countryItemClickObservable: Observable<CountryResponse> =
+        countryPublishSubject
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -23,7 +23,7 @@ class CountryAdapter : BaseListAdapter<CountryResponse>() {
         return CountryViewHolder(
             LayoutInflater.from(parent.context)
                 .inflate(R.layout.item_holiday_parameter, parent, false),
-            countryResponsePublishSubject
+            countryPublishSubject
         )
     }
 

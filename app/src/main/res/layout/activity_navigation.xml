@@ -6,15 +6,6 @@
     android:gravity="bottom"
     android:orientation="vertical">
 
-    <com.heapix.calendarific.utils.view.SelectionView
-        android:id="@+id/vSelectionView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone"
-        app:isSelectionView="true">
-
-    </com.heapix.calendarific.utils.view.SelectionView>
-
     <LinearLayout
         android:id="@+id/vLlContainerWithNavigation"
         android:layout_width="match_parent"

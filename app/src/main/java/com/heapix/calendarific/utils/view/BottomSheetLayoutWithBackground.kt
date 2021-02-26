@@ -7,8 +7,6 @@ import android.view.Gravity
 import android.view.MotionEvent
 import android.view.View
 import android.widget.FrameLayout
-import androidx.core.content.ContextCompat
-import com.heapix.calendarific.R
 
 open class BottomSheetLayoutWithBackground @kotlin.jvm.JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
@@ -22,7 +20,7 @@ open class BottomSheetLayoutWithBackground @kotlin.jvm.JvmOverloads constructor(
 
     init {
         shadow = View(context)
-        shadow.setBackgroundColor(ContextCompat.getColor(context, R.color.light_gray))
+        //shadow.setBackgroundColor(ContextCompat.getColor(context, R.color.light_gray))
         shadow.alpha = 0f
 
         addView(shadow, 0)

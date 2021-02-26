@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/vClFragmentHolidays"
@@ -9,121 +9,90 @@
     android:fitsSystemWindows="true"
     tools:context=".ui.holidays.HolidaysFragment">
 
-    <LinearLayout
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/vTvCountry"
-            style="@style/TopTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/dp_10"
-            android:text="Country" />
-
-        <View
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1" />
-
-        <TextView
-            android:id="@+id/vTvYear"
-            style="@style/TopTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/dp_10"
-            android:text="Year"
-            android:textColor="@color/gray" />
-
-    </LinearLayout>
-
-    <TextView
-        android:id="@+id/vTvSelectIsoAndYear"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginHorizontal="@dimen/dp_14"
-        android:gravity="center"
-        android:text="@string/select_country_and_year"
-        android:textColor="@color/black"
-        android:textSize="@dimen/sp_14"
-        android:visibility="gone" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/vRvHolidayList"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/dp_64"
-        android:layout_weight="1"
-        android:orientation="vertical"
-        android:overScrollMode="never"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/item_holiday" />
-
-    <LinearLayout
-        android:id="@+id/vLlCountryBottomSheet"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/dp_72"
-        android:background="@drawable/bg_rec_top_rounded_32"
-        android:orientation="vertical"
-        android:visibility="gone"
-        app:behavior_hideable="true"
-        app:behavior_peekHeight="0dp"
-        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
-
-        <TextView
-            android:id="@+id/vTvCountryBottomSheet"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/dp_18"
-            android:gravity="center"
-            android:text="@string/country"
-            android:textColor="@color/black"
-            android:textSize="@dimen/sp_16" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/vRvCountryList"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:overScrollMode="never"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/item_holiday_parameter" />
+            android:orientation="vertical">
 
-    </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:orientation="horizontal">
 
-    <LinearLayout
-        android:id="@+id/vLlYearBottomSheet"
+                <TextView
+                    android:id="@+id/vTvCountry"
+                    style="@style/TopTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dp_10"
+                    tools:text="Country" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/vTvYear"
+                    style="@style/TopTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/dp_10"
+                    android:textColor="@color/gray"
+                    tools:text="Year" />
+
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/vRvHolidayList"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="@dimen/dp_10"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:overScrollMode="never"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/item_holiday" />
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <com.heapix.calendarific.utils.view.BottomSheetLayoutWithBackground
+        android:id="@+id/vBottomSheetCountryListHolidays"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/dp_72"
-        android:background="@drawable/bg_rec_top_rounded_32"
-        android:orientation="vertical"
-        android:visibility="gone"
-        app:behavior_hideable="true"
-        app:behavior_peekHeight="0dp"
-        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+        android:paddingTop="@dimen/dp_28"
+        app:collapsedHeight="0dp">
 
-        <TextView
-            android:id="@+id/vTvYearBottomSheet"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/dp_18"
-            android:gravity="center"
-            android:text="@string/year"
-            android:textColor="@color/black"
-            android:textSize="@dimen/sp_16" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/vRvYearList"
+        <include
+            android:id="@+id/vCountryListHolidays"
+            layout="@layout/view_country_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:overScrollMode="never"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/item_holiday_parameter" />
+            android:layout_gravity="bottom" />
 
-    </LinearLayout>
+    </com.heapix.calendarific.utils.view.BottomSheetLayoutWithBackground>
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+    <com.heapix.calendarific.utils.view.BottomSheetLayoutWithBackground
+        android:id="@+id/vBottomSheetYearPickerHolidays"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:collapsedHeight="0dp">
+
+        <include
+            android:id="@+id/vYearListHolidays"
+            layout="@layout/view_year_picker"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom" />
+
+    </com.heapix.calendarific.utils.view.BottomSheetLayoutWithBackground>
+
+</FrameLayout>

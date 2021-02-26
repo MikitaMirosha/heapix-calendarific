@@ -6,7 +6,8 @@ data class HolidayResponse(
     var name: String? = null,
     var description: String? = null,
     var date: DateResponse? = null,
-    var type: MutableList<String>? = mutableListOf(),
+    var type: MutableList<String> = mutableListOf(),
     var locations: String? = null,
-    var states: String? = null
+    var states: String? = null,
+    var isNotHolidayPassed: Boolean = false
 )

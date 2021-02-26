@@ -11,10 +11,10 @@ import io.reactivex.subjects.PublishSubject
 
 class HolidayAdapter : BaseListAdapter<HolidayResponse>() {
 
-    private val holidayResponsePublishSubject: PublishSubject<HolidayResponse> =
+    private val holidayPublishSubject: PublishSubject<HolidayResponse> =
         PublishSubject.create()
-    val holidayResponseItemClickObservable: Observable<HolidayResponse> =
-        holidayResponsePublishSubject
+    val holidayItemClickObservable: Observable<HolidayResponse> =
+        holidayPublishSubject
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -23,7 +23,7 @@ class HolidayAdapter : BaseListAdapter<HolidayResponse>() {
         return HolidayViewHolder(
             LayoutInflater.from(parent.context)
                 .inflate(R.layout.item_holiday, parent, false),
-            holidayResponsePublishSubject
+            holidayPublishSubject
         )
     }
 

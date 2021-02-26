@@ -1,6 +1,7 @@
 package com.heapix.calendarific.ui.holidays.adapter.holiday
 
 import android.view.View
+import com.heapix.calendarific.R
 import com.heapix.calendarific.net.responses.holiday.HolidayResponse
 import com.heapix.calendarific.ui.base.adapters.BaseViewHolder
 import io.reactivex.subjects.PublishSubject
@@ -17,6 +18,7 @@ class HolidayViewHolder(
         setupHolidayName(model)
         setupHolidayDate(model)
         setupHolidayDescription(model)
+        setupHolidayStatusImage(model)
         setupClickListener(model)
     }
 
@@ -32,6 +34,14 @@ class HolidayViewHolder(
 
     private fun setupHolidayDescription(holidayResponse: HolidayResponse) {
         vTvHolidayDescription.text = holidayResponse.description
+    }
+
+    private fun setupHolidayStatusImage(holidayResponse: HolidayResponse) {
+        if (holidayResponse.isNotHolidayPassed) {
+            vIvHolidayStatus.setImageResource(R.drawable.ic_unchecked)
+        } else {
+            vIvHolidayStatus.setImageResource(R.drawable.ic_checked)
+        }
     }
 
     private fun setupClickListener(holidayResponse: HolidayResponse) {

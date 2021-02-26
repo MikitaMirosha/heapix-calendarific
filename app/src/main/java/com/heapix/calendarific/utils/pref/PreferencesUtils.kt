@@ -13,6 +13,7 @@ class PreferencesUtils {
 
         const val ISO: String = "ISO"
         const val YEAR: String = "YEAR"
+        const val COUNTRY_NAME: String = "COUNTRY_NAME"
     }
 }
 
@@ -29,3 +30,7 @@ var SharedPreferences.iso: String?
 var SharedPreferences.year: Int
     get() = getInt(PreferencesUtils.YEAR, 0)
     set(value) = editMe { it.putInt(PreferencesUtils.YEAR, value) }
+
+var SharedPreferences.countryName: String?
+    get() = getString(PreferencesUtils.COUNTRY_NAME, "")
+    set(value) = editMe { it.putString(PreferencesUtils.COUNTRY_NAME, value) }
