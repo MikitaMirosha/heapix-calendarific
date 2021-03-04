@@ -16,6 +16,7 @@ class ApiRest {
     companion object {
 
         private const val BASE_URL: String = "https://calendarific.com/api/v2/"
+        private const val API_KEY: String = "695c69c7414e935be7cc43d17666bbe916b62863"
 
         internal fun getApi(): Retrofit {
 
@@ -50,7 +51,7 @@ class ApiRest {
                         .newBuilder()
                         .addQueryParameter(
                             "api_key",
-                            "3b216f85c47d04835188aaeb62dc5cdc1140a67d"
+                            API_KEY
                         )
                         .build()
                     request.url(url)

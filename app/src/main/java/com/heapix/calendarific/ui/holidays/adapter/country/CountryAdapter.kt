@@ -22,7 +22,7 @@ class CountryAdapter : BaseListAdapter<CountryResponse>() {
     ): BaseViewHolder<CountryResponse> {
         return CountryViewHolder(
             LayoutInflater.from(parent.context)
-                .inflate(R.layout.item_holiday_parameter, parent, false),
+                .inflate(R.layout.item_country_name, parent, false),
             countryPublishSubject
         )
     }

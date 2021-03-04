@@ -2,7 +2,6 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/vClFragmentHolidays"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/light_purple"
@@ -19,35 +18,34 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <LinearLayout
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/white"
-                android:orientation="horizontal">
+                android:layout_height="@dimen/dp_56"
+                android:background="@color/white">
 
                 <TextView
                     android:id="@+id/vTvCountry"
-                    style="@style/TopTextView"
-                    android:layout_width="wrap_content"
+                    style="@style/TopAppBarText"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
                     android:layout_marginStart="@dimen/dp_10"
+                    android:layout_marginEnd="@dimen/dp_64"
+                    android:ellipsize="end"
+                    android:maxLines="1"
                     tools:text="Country" />
-
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1" />
 
                 <TextView
                     android:id="@+id/vTvYear"
-                    style="@style/TopTextView"
+                    style="@style/TopAppBarText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="end"
                     android:layout_marginEnd="@dimen/dp_10"
                     android:textColor="@color/gray"
                     tools:text="Year" />
 
-            </LinearLayout>
+            </FrameLayout>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/vRvHolidayList"
@@ -58,21 +56,20 @@
                 android:orientation="vertical"
                 android:overScrollMode="never"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:listitem="@layout/item_holiday" />
+                tools:listitem="@layout/item_holiday_card" />
 
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
 
     <com.heapix.calendarific.utils.view.BottomSheetLayoutWithBackground
-        android:id="@+id/vBottomSheetCountryListHolidays"
+        android:id="@+id/vCountryListHolidaysBottomSheet"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingTop="@dimen/dp_28"
         app:collapsedHeight="0dp">
 
         <include
-            android:id="@+id/vCountryListHolidays"
             layout="@layout/view_country_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -81,14 +78,14 @@
     </com.heapix.calendarific.utils.view.BottomSheetLayoutWithBackground>
 
     <com.heapix.calendarific.utils.view.BottomSheetLayoutWithBackground
-        android:id="@+id/vBottomSheetYearPickerHolidays"
+        android:id="@+id/vYearListHolidaysBottomSheet"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:paddingTop="@dimen/dp_28"
         app:collapsedHeight="0dp">
 
         <include
-            android:id="@+id/vYearListHolidays"
-            layout="@layout/view_year_picker"
+            layout="@layout/view_year_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom" />

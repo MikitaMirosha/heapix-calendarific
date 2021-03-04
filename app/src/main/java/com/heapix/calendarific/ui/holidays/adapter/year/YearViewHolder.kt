@@ -3,7 +3,7 @@ package com.heapix.calendarific.ui.holidays.adapter.year
 import android.view.View
 import com.heapix.calendarific.ui.base.adapters.BaseViewHolder
 import io.reactivex.subjects.PublishSubject
-import kotlinx.android.synthetic.main.item_holiday_parameter.*
+import kotlinx.android.synthetic.main.item_year_number.*
 
 class YearViewHolder(
     itemView: View,
@@ -16,7 +16,7 @@ class YearViewHolder(
     }
 
     private fun setupYear(year: Int) {
-        vTvParameterName.text = year.toString()
+        vTvYearNumberItem.text = year.toString()
     }
 
     private fun setupClickListener(year: Int) {

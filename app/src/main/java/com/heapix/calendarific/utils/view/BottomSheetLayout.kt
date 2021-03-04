@@ -9,9 +9,12 @@ import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.FrameLayout
 import androidx.annotation.AttrRes
 import com.heapix.calendarific.R
+import kotlinx.android.synthetic.main.view_country_list.*
+import kotlinx.android.synthetic.main.view_country_list.view.*
 
 /**
  * Created by quentin on 07/11/2017.
@@ -221,6 +224,12 @@ class BottomSheetLayout : FrameLayout {
         valueAnimator.start()
     }
 
+    fun hideKeyboard(view: View) {
+        val inputMethodManager: InputMethodManager =
+            context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
+    }
+
     fun expand() {
         if (valueAnimator.isRunning) {
             valueAnimator.cancel()
@@ -365,6 +374,8 @@ class BottomSheetLayout : FrameLayout {
                         startY = ev.rawY
                         startTime = System.currentTimeMillis().toDouble()
                         startsCollapsed = progress < 0.5
+                        vEtSearch.text.clear()
+                        hideKeyboard(v)
                     }
 
                     Log.i("123123", "down")

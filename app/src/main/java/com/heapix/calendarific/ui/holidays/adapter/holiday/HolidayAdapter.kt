@@ -6,15 +6,12 @@ import com.heapix.calendarific.R
 import com.heapix.calendarific.net.responses.holiday.HolidayResponse
 import com.heapix.calendarific.ui.base.adapters.BaseListAdapter
 import com.heapix.calendarific.ui.base.adapters.BaseViewHolder
-import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 
 class HolidayAdapter : BaseListAdapter<HolidayResponse>() {
 
     private val holidayPublishSubject: PublishSubject<HolidayResponse> =
         PublishSubject.create()
-    val holidayItemClickObservable: Observable<HolidayResponse> =
-        holidayPublishSubject
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -22,7 +19,7 @@ class HolidayAdapter : BaseListAdapter<HolidayResponse>() {
     ): BaseViewHolder<HolidayResponse> {
         return HolidayViewHolder(
             LayoutInflater.from(parent.context)
-                .inflate(R.layout.item_holiday, parent, false),
+                .inflate(R.layout.item_holiday_card, parent, false),
             holidayPublishSubject
         )
     }

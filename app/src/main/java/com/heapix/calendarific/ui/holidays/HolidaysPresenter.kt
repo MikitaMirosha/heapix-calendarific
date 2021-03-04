@@ -7,7 +7,6 @@ import com.heapix.calendarific.net.repo.CountryRepo
 import com.heapix.calendarific.net.repo.HolidayRepo
 import com.heapix.calendarific.net.repo.YearRepo
 import com.heapix.calendarific.net.responses.country.CountryResponse
-import com.heapix.calendarific.net.responses.holiday.HolidayResponse
 import com.heapix.calendarific.ui.base.BaseMvpPresenter
 import io.reactivex.Observable
 import org.kodein.di.instance
@@ -22,19 +21,19 @@ class HolidaysPresenter : BaseMvpPresenter<HolidaysView>() {
     private lateinit var countryResponseList: MutableList<CountryResponse>
 
     fun onCreate(
-        holidayItemClickObservable: Observable<HolidayResponse>,
-        countryItemClickObservable: Observable<CountryResponse>
+        countryItemClickObservable: Observable<CountryResponse>,
+        yearItemClickObservable: Observable<Int>
     ) {
         getHolidaysAndUpdateUi()
         getCountriesAndUpdateUi()
         getYearsAndUpdateUi()
-        setupOnHolidayItemClickListener(holidayItemClickObservable)
         setupOnCountryItemClickListener(countryItemClickObservable)
+        setupOnYearItemClickListener(yearItemClickObservable)
     }
 
     private fun getHolidaysAndUpdateUi() {
         addDisposable(
-            holidayRepo.getAllHolidays(getIso(), getYear())
+            holidayRepo.getAllHolidays(countryRepo.getIso() ?: "", yearRepo.getYear())
                 .subscribeOn(schedulers.io())
                 .observeOn(schedulers.ui())
                 .subscribe(
@@ -55,8 +54,7 @@ class HolidaysPresenter : BaseMvpPresenter<HolidaysView>() {
                 .subscribe(
                     {
                         countryResponseList = it
-                        viewState.showChosenCountryName(getCountryName())
-                        //viewState.showChosenCountryName(getIso())
+                        viewState.showChosenCountryName(findCountryNameByIso(it))
                         viewState.updateCountries(it)
                     }, {
                         Log.e("TAG", it.toString())
@@ -66,36 +64,19 @@ class HolidaysPresenter : BaseMvpPresenter<HolidaysView>() {
     }
 
     private fun getYearsAndUpdateUi() {
-        viewState.showChosenYear(getYear())
+        viewState.showChosenYear(yearRepo.getYear())
         viewState.updateYears(yearRepo.getAllYears())
     }
 
-    private fun setupOnHolidayItemClickListener(holidayResponseItemClickObservable: Observable<HolidayResponse>) {
+    private fun setupOnCountryItemClickListener(countryItemClickObservable: Observable<CountryResponse>) {
         addDisposable(
-            holidayResponseItemClickObservable
-                .subscribeOn(schedulers.io())
-                .observeOn(schedulers.ui())
-                .subscribe(
-                    {
-                        showMessage("Holiday card is pressed")
-                    }, {
-                        Log.e("TAG", it.toString())
-                    }
-                )
-        )
-    }
-
-    private fun setupOnCountryItemClickListener(countryResponseItemClickObservable: Observable<CountryResponse>) {
-        addDisposable(
-            countryResponseItemClickObservable
+            countryItemClickObservable
                 .subscribeOn(schedulers.io())
                 .observeOn(schedulers.ui())
                 .subscribe(
                     {
                         countryRepo.saveIso(it.iso)
-                        getHolidaysAndUpdateUi()
-                        viewState.hideKeyboard()
-                        viewState.hideCountryList()
+                        onCountryItemClicked()
                         viewState.showChosenCountryName(it.countryName)
                     }, {
                         Log.e("TAG", it.toString())
@@ -104,35 +85,52 @@ class HolidaysPresenter : BaseMvpPresenter<HolidaysView>() {
         )
     }
 
+    private fun setupOnYearItemClickListener(yearItemClickObservable: Observable<Int>) {
+        addDisposable(
+            yearItemClickObservable
+                .subscribeOn(schedulers.io())
+                .observeOn(schedulers.ui())
+                .subscribe(
+                    {
+                        yearRepo.saveYear(it)
+                        onYearItemClicked()
+                        viewState.showChosenYear(it)
+                    }, {
+                        Log.e("TAG", it.toString())
+                    }
+                )
+        )
+    }
+
+    private fun findCountryNameByIso(countryResponse: MutableList<CountryResponse>): String? {
+        return countryResponse.find {
+            countryRepo.getIso() == it.iso
+        }?.countryName
+    }
+
+    private fun onCountryItemClicked() {
+        getHolidaysAndUpdateUi()
+        viewState.hideCountryList()
+    }
+
+    private fun onYearItemClicked() {
+        getHolidaysAndUpdateUi()
+        viewState.toggleBottomSheet()
+    }
+
     fun onTextChanged(text: String) {
         viewState.updateCountries(
             countryResponseList.filter {
                 it.countryName?.contains(
-                    text,
+                    other = text,
                     ignoreCase = true
                 ) ?: true
             }.toMutableList()
         )
     }
 
-    fun onBackButtonClicked() {
-        getHolidaysAndUpdateUi()
-        viewState.hideYearPicker()
-    }
-
-    fun onNumberPickerScrolled(year: Int) {
-        countryRepo.saveYear(year)
-        viewState.showChosenYear(getYear())
-    }
-
-    private fun getIso(): String = countryRepo.getIso()
-
-    private fun getYear(): Int = yearRepo.getYear()
-
-    private fun getCountryName(): String = countryRepo.getCountryName()
-
     fun onCountryClicked() = viewState.showCountryList()
 
-    fun onYearClicked() = viewState.showYearPicker(getYear())
+    fun onYearClicked() = viewState.toggleBottomSheet()
 
 }

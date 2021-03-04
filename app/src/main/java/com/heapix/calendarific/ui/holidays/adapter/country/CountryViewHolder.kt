@@ -4,7 +4,7 @@ import android.view.View
 import com.heapix.calendarific.net.responses.country.CountryResponse
 import com.heapix.calendarific.ui.base.adapters.BaseViewHolder
 import io.reactivex.subjects.PublishSubject
-import kotlinx.android.synthetic.main.item_holiday_parameter.*
+import kotlinx.android.synthetic.main.item_country_name.*
 
 class CountryViewHolder(
     itemView: View,
@@ -17,7 +17,7 @@ class CountryViewHolder(
     }
 
     private fun setupCountryName(countryResponse: CountryResponse) {
-        vTvParameterName.text = countryResponse.countryName
+        vTvCountryNameItem.text = countryResponse.countryName
     }
 
     private fun setupClickListener(countryResponse: CountryResponse) {

@@ -19,7 +19,7 @@ class YearAdapter : BaseListAdapter<Int>() {
     ): BaseViewHolder<Int> {
         return YearViewHolder(
             LayoutInflater.from(parent.context)
-                .inflate(R.layout.item_holiday_parameter, parent, false),
+                .inflate(R.layout.item_year_number, parent, false),
             yearPublishSubject
         )
     }

@@ -10,9 +10,8 @@ interface HolidaysView : BaseMvpView {
     fun updateYears(yearList: MutableList<Int>)
     fun showCountryList()
     fun hideCountryList()
-    fun showYearPicker(year: Int)
-    fun hideYearPicker()
     fun showChosenCountryName(countryName: String?)
     fun showChosenYear(year: Int)
-    fun hideKeyboard()
+    fun toggleBottomSheet()
+    fun onDoubleBackPressed()
 }

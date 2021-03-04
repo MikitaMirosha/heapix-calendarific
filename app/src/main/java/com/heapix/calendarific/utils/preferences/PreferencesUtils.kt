@@ -1,4 +1,4 @@
-package com.heapix.calendarific.utils.pref
+package com.heapix.calendarific.utils.preferences
 
 import android.content.Context
 import android.content.SharedPreferences
@@ -13,7 +13,6 @@ class PreferencesUtils {
 
         const val ISO: String = "ISO"
         const val YEAR: String = "YEAR"
-        const val COUNTRY_NAME: String = "COUNTRY_NAME"
     }
 }
 
@@ -24,13 +23,9 @@ inline fun SharedPreferences.editMe(operation: (SharedPreferences.Editor) -> Uni
 }
 
 var SharedPreferences.iso: String?
-    get() = getString(PreferencesUtils.ISO, "")
+    get() = getString(PreferencesUtils.ISO, "") ?: ""
     set(value) = editMe { it.putString(PreferencesUtils.ISO, value) }
 
 var SharedPreferences.year: Int
     get() = getInt(PreferencesUtils.YEAR, 0)
     set(value) = editMe { it.putInt(PreferencesUtils.YEAR, value) }
-
-var SharedPreferences.countryName: String?
-    get() = getString(PreferencesUtils.COUNTRY_NAME, "")
-    set(value) = editMe { it.putString(PreferencesUtils.COUNTRY_NAME, value) }

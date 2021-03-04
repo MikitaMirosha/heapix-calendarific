@@ -3,9 +3,7 @@ package com.heapix.calendarific.ui.navigation
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
-import com.arellomobile.mvp.presenter.InjectPresenter
 import com.heapix.calendarific.R
 import com.heapix.calendarific.ui.base.BaseMvpActivity
 import com.heapix.calendarific.ui.calendar.CalendarFragment
@@ -13,15 +11,13 @@ import com.heapix.calendarific.ui.holidays.HolidaysFragment
 import com.heapix.calendarific.ui.world.WorldFragment
 import com.ncapdevi.fragnav.FragNavController
 import com.ncapdevi.fragnav.FragNavTransactionOptions
+import kotlinx.android.synthetic.main.activity_initial.*
 import kotlinx.android.synthetic.main.activity_navigation.*
 import kotlinx.android.synthetic.main.fragment_holidays.*
 import kotlinx.android.synthetic.main.view_country_list.*
-import kotlinx.android.synthetic.main.view_year_picker.*
+import kotlinx.android.synthetic.main.view_year_list.*
 
-class NavigationActivity : BaseMvpActivity(), NavigationView {
-
-    @InjectPresenter
-    lateinit var navigationPresenter: NavigationPresenter
+class NavigationActivity : BaseMvpActivity() {
 
     private var isOnDoubleBackPressed = false
 
@@ -33,7 +29,7 @@ class NavigationActivity : BaseMvpActivity(), NavigationView {
     }
 
     private var fragNavController: FragNavController =
-        FragNavController(supportFragmentManager, R.id.vFlContainer)
+        FragNavController(supportFragmentManager, R.id.vFlNavigationContainer)
 
     private val fragmentsList = listOf(
         HolidaysFragment.newInstance(),
@@ -77,9 +73,7 @@ class NavigationActivity : BaseMvpActivity(), NavigationView {
         }
     }
 
-    fun navigateToFragment(fragment: Fragment) = fragNavController.pushFragment(fragment)
-
-    private fun onDoubleBackPressed() {
+    fun onDoubleBackPressed() {
         if (isOnDoubleBackPressed) {
             super.onBackPressed()
             return
@@ -95,10 +89,11 @@ class NavigationActivity : BaseMvpActivity(), NavigationView {
     }
 
     override fun onBackPressed() {
-        if (fragNavController.isRootFragment) {
-            onDoubleBackPressed()
+        if (vCountryListHolidaysBottomSheet.isExpanded()) {
+            vEtSearch.text.clear()
+            vCountryListHolidaysBottomSheet.toggle()
         } else {
-            fragNavController.popFragment()
+            onDoubleBackPressed()
         }
     }
 

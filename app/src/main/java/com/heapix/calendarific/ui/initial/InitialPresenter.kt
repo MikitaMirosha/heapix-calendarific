@@ -21,22 +21,25 @@ class InitialPresenter : BaseMvpPresenter<InitialView>() {
     private lateinit var countryResponseList: MutableList<CountryResponse>
 
     fun onCreate(
-        countryItemClickObservable: Observable<CountryResponse>
+        countryItemClickObservable: Observable<CountryResponse>,
+        yearItemClickObservable: Observable<Int>
     ) {
-        setCurrentYearInSharedPreferences()
-        checkIsoAndYearInSharedPreferences()
+        checkIsoAndYearInStorage()
+        setCurrentYearInStorage()
         getCountriesAndUpdateUi()
+        getYearsAndUpdateUi()
         setupOnCountryItemClickListener(countryItemClickObservable)
+        setupOnYearItemClickListener(yearItemClickObservable)
     }
 
-    private fun checkIsoAndYearInSharedPreferences() {
-        if (isIsoInSharedPreferences() && isYearInSharedPreferences()) {
+    private fun checkIsoAndYearInStorage() {
+        if (countryRepo.isIsoInStorage() && yearRepo.isYearInStorage()) {
             viewState.openNavigationActivity()
         }
     }
 
-    private fun setCurrentYearInSharedPreferences() {
-        countryRepo.saveYear(LocalDate().yearOfEra)
+    private fun setCurrentYearInStorage() {
+        yearRepo.saveYear(LocalDate().yearOfEra)
     }
 
     private fun getCountriesAndUpdateUi() {
@@ -55,6 +58,10 @@ class InitialPresenter : BaseMvpPresenter<InitialView>() {
         )
     }
 
+    private fun getYearsAndUpdateUi() {
+        viewState.updateYears(yearRepo.getAllYears())
+    }
+
     private fun setupOnCountryItemClickListener(countryResponseItemClickObservable: Observable<CountryResponse>) {
         addDisposable(
             countryResponseItemClickObservable
@@ -63,9 +70,7 @@ class InitialPresenter : BaseMvpPresenter<InitialView>() {
                 .subscribe(
                     {
                         countryRepo.saveIso(it.iso)
-                        countryRepo.saveCountryName(it.countryName)
-                        viewState.hideKeyboard()
-                        viewState.hideCountryList()
+                        onCountryItemClicked()
                         viewState.showChosenCountryName(it.countryName)
                     }, {
                         Log.e("TAG", it.toString())
@@ -74,41 +79,48 @@ class InitialPresenter : BaseMvpPresenter<InitialView>() {
         )
     }
 
+    private fun setupOnYearItemClickListener(yearItemClickObservable: Observable<Int>) {
+        addDisposable(
+            yearItemClickObservable
+                .subscribeOn(schedulers.io())
+                .observeOn(schedulers.ui())
+                .subscribe(
+                    {
+                        yearRepo.saveYear(it)
+                        viewState.toggleBottomSheet()
+                        viewState.showChosenYear(it)
+                    }, {
+                        Log.e("TAG", it.toString())
+                    }
+                )
+        )
+    }
+
+    private fun onCountryItemClicked() {
+        viewState.hideCountryList()
+    }
+
     fun onTextChanged(text: String) {
         viewState.updateCountries(
             countryResponseList.filter {
                 it.countryName?.contains(
-                    text,
+                    other = text,
                     ignoreCase = true
                 ) ?: true
             }.toMutableList()
         )
     }
 
-    private fun getIso(): String = countryRepo.getIso()
-
-    private fun getYear(): Int = yearRepo.getYear()
-
-    private fun isIsoInSharedPreferences(): Boolean = getIso() != ""
-
-    private fun isYearInSharedPreferences(): Boolean = getYear() != 0
-
     fun onSelectCountryClicked() = viewState.showCountryList()
 
-    fun onSelectYearClicked() = viewState.showYearPicker(getYear())
+    fun onSelectYearClicked() = viewState.toggleBottomSheet()
 
     fun onNextButtonClicked() {
-        if (isIsoInSharedPreferences() && isYearInSharedPreferences()) {
+        if (countryRepo.isIsoInStorage() && yearRepo.isYearInStorage()) {
             viewState.openNavigationActivity()
         } else {
             showMessage(R.string.please_enter_full_data)
         }
     }
 
-    fun onBackButtonClicked() = viewState.hideYearPicker()
-
-    fun onNumberPickerScrolled(year: Int) {
-        countryRepo.saveYear(year)
-        viewState.showChosenYear(getYear())
-    }
 }

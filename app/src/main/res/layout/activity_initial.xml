@@ -1,17 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/vLlSelectionView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/light_purple"
-    android:fitsSystemWindows="true"
     android:overScrollMode="never">
 
     <androidx.core.widget.NestedScrollView
-        android:id="@+id/vLlSelectionScreen"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
         android:orientation="vertical">
 
         <LinearLayout
@@ -29,7 +27,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/dp_18"
+                android:layout_marginHorizontal="@dimen/dp_18"
                 android:layout_marginTop="@dimen/dp_28"
                 android:text="@string/discover_holidays_worldwide"
                 android:textColor="@color/purple"
@@ -37,22 +35,18 @@
                 android:textStyle="bold" />
 
             <TextView
+                style="@style/InitialActivityDescriptionText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/dp_18"
-                android:layout_marginTop="@dimen/dp_18"
-                android:text="@string/selection_description"
-                android:textColor="@color/purple"
-                android:textSize="@dimen/sp_14" />
+                android:text="@string/selection_description" />
 
             <TextView
+                style="@style/InitialActivityDescriptionText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/dp_18"
-                android:layout_marginTop="@dimen/dp_18"
-                android:text="@string/please_select"
-                android:textColor="@color/purple"
-                android:textSize="@dimen/sp_14" />
+                android:text="@string/please_select" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -62,54 +56,51 @@
                 android:orientation="vertical">
 
                 <LinearLayout
-                    android:layout_width="match_parent"
+                    android:id="@+id/vLlSelectCountry"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="@dimen/dp_18"
                     android:layout_marginVertical="@dimen/dp_18"
                     android:orientation="horizontal">
 
                     <TextView
+                        style="@style/InitialActivityCategoryText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/country_double_dots"
-                        android:textColor="@color/purple"
-                        android:textSize="@dimen/sp_14"
-                        android:textStyle="bold" />
+                        android:text="@string/country_double_dots" />
 
                     <TextView
-                        android:id="@+id/vTvCountryName"
+                        android:id="@+id/vTvSelectInitialCountry"
+                        style="@style/InitialActivitySelectCategoryText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/dp_8"
-                        android:text="@string/select_country"
-                        android:textColor="@color/purple"
-                        android:textSize="@dimen/sp_14" />
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:text="@string/select_country" />
 
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_width="match_parent"
+                    android:id="@+id/vLlSelectYear"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="@dimen/dp_18"
                     android:orientation="horizontal">
 
                     <TextView
+                        style="@style/InitialActivityCategoryText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/year_double_dots"
-                        android:textColor="@color/purple"
-                        android:textSize="@dimen/sp_14"
-                        android:textStyle="bold" />
+                        android:text="@string/year_double_dots" />
 
                     <TextView
-                        android:id="@+id/vTvYearNumber"
+                        android:id="@+id/vTvSelectInitialYear"
+                        style="@style/InitialActivitySelectCategoryText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginStart="@dimen/dp_8"
-                        android:text="@string/select_year"
-                        android:textColor="@color/purple"
-                        android:textSize="@dimen/sp_14" />
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:text="@string/select_year" />
 
                 </LinearLayout>
 
@@ -118,10 +109,11 @@
             <TextView
                 android:id="@+id/vTvNext"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_gravity="end"
                 android:layout_marginVertical="@dimen/dp_18"
                 android:layout_marginEnd="@dimen/dp_22"
+                android:gravity="bottom"
                 android:text="@string/next"
                 android:textColor="@color/purple"
                 android:textSize="@dimen/sp_16"
@@ -135,11 +127,10 @@
         android:id="@+id/vCountryListBottomSheet"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingTop="@dimen/dp_36"
+        android:paddingTop="@dimen/dp_28"
         app:collapsedHeight="0dp">
 
         <include
-            android:id="@+id/vCountryList"
             layout="@layout/view_country_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -148,14 +139,14 @@
     </com.heapix.calendarific.utils.view.BottomSheetLayoutWithBackground>
 
     <com.heapix.calendarific.utils.view.BottomSheetLayoutWithBackground
-        android:id="@+id/vYearPickerBottomSheet"
+        android:id="@+id/vYearListBottomSheet"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:paddingTop="@dimen/dp_28"
         app:collapsedHeight="0dp">
 
         <include
-            android:id="@+id/vYearList"
-            layout="@layout/view_year_picker"
+            layout="@layout/view_year_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom" />

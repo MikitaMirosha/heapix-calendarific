@@ -8,7 +8,7 @@ import com.heapix.calendarific.net.repo.YearRepo
 import com.heapix.calendarific.net.services.ApiRest
 import com.heapix.calendarific.net.services.CountryService
 import com.heapix.calendarific.net.services.HolidayService
-import com.heapix.calendarific.utils.pref.PreferencesUtils
+import com.heapix.calendarific.utils.preferences.PreferencesUtils
 import com.heapix.calendarific.utils.rx.AppSchedulerProvider
 import com.heapix.calendarific.utils.rx.SchedulerProvider
 import io.reactivex.disposables.CompositeDisposable

@@ -38,7 +38,6 @@ open class BottomSheetLayoutWithBackground @kotlin.jvm.JvmOverloads constructor(
         bottomSheetLayout.setOnProgressListener { progress ->
             var newAlpha = progress * 0.2f
             if (Math.abs(newAlpha - shadow.alpha) > 0.005 || newAlpha == 0f || newAlpha == 0.3f) {
-//                Log.i("asdasdasd", "new alpha = $newAlpha")
                 shadow.alpha = newAlpha
             }
 
@@ -70,16 +69,11 @@ open class BottomSheetLayoutWithBackground @kotlin.jvm.JvmOverloads constructor(
     }
 
     override fun onFinishInflate() {
-//        Log.i("asdasdasd", "onfinishinflate")
         super.onFinishInflate()
 
         val view = getChildAt(2)
         removeViewAt(2)
         bottomSheetLayout.addView(view)
-
-//        invalidate()
-//        requestLayout()
-
         bottomSheetLayout.reinit()
     }
 

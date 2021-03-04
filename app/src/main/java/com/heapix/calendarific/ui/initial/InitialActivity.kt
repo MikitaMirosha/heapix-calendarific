@@ -2,38 +2,48 @@ package com.heapix.calendarific.ui.initial
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.heapix.calendarific.R
 import com.heapix.calendarific.net.responses.country.CountryResponse
 import com.heapix.calendarific.ui.base.BaseMvpActivity
 import com.heapix.calendarific.ui.holidays.adapter.country.CountryAdapter
+import com.heapix.calendarific.ui.holidays.adapter.year.YearAdapter
 import com.heapix.calendarific.ui.navigation.NavigationActivity
 import com.insspring.poifox.utils.SimpleTextWatcher
 import kotlinx.android.synthetic.main.activity_initial.*
 import kotlinx.android.synthetic.main.view_country_list.*
-import kotlinx.android.synthetic.main.view_year_picker.*
+import kotlinx.android.synthetic.main.view_year_list.*
 
 class InitialActivity : BaseMvpActivity(), InitialView {
 
     @InjectPresenter
     lateinit var initialPresenter: InitialPresenter
 
+    private var isOnDoubleBackPressed = false
+
     private lateinit var countryAdapter: CountryAdapter
+    private lateinit var yearAdapter: YearAdapter
 
     override fun getLayoutId(): Int = R.layout.activity_initial
 
     override fun onCreateActivity(savedInstanceState: Bundle?) {
         initListeners()
         setupCountryAdapter()
-        initialPresenter.onCreate(countryAdapter.countryItemClickObservable)
+        setupYearAdapter()
+        initialPresenter.onCreate(
+            countryAdapter.countryItemClickObservable,
+            yearAdapter.yearItemClickObservable
+        )
     }
 
     private fun initListeners() {
-        vTvCountryName.setOnClickListener {
+        vLlSelectCountry.setOnClickListener {
             initialPresenter.onSelectCountryClicked()
         }
 
-        vTvYearNumber.setOnClickListener {
+        vLlSelectYear.setOnClickListener {
             initialPresenter.onSelectYearClicked()
         }
 
@@ -41,20 +51,17 @@ class InitialActivity : BaseMvpActivity(), InitialView {
             initialPresenter.onNextButtonClicked()
         }
 
-        vFlBackButtonContainer.setOnClickListener {
-            initialPresenter.onBackButtonClicked()
-        }
-
-        vNumberPicker.setOnValueChangedListener { _, _, _ ->
-            initialPresenter.onNumberPickerScrolled(vNumberPicker.value)
-        }
-
         setupOnTextChangedListener()
     }
 
     private fun setupCountryAdapter() {
         countryAdapter = CountryAdapter()
-        vRvCountriesList.adapter = countryAdapter
+        vRvCountryList.adapter = countryAdapter
+    }
+
+    private fun setupYearAdapter() {
+        yearAdapter = YearAdapter()
+        vRvYearList.adapter = yearAdapter
     }
 
     private fun setupOnTextChangedListener() {
@@ -67,8 +74,36 @@ class InitialActivity : BaseMvpActivity(), InitialView {
         )
     }
 
+    private fun onDoubleBackPressed() {
+        if (isOnDoubleBackPressed) {
+            super.onBackPressed()
+            return
+        }
+
+        this.isOnDoubleBackPressed = true
+        showMessage(R.string.press_back_again_to_exit)
+
+        Handler(Looper.getMainLooper()).postDelayed(
+            { isOnDoubleBackPressed = false },
+            2000
+        )
+    }
+
+    override fun onBackPressed() {
+        if (vCountryListBottomSheet.isExpanded()) {
+            vEtSearch.text.clear()
+            vCountryListBottomSheet.toggle()
+        } else {
+            onDoubleBackPressed()
+        }
+    }
+
     override fun updateCountries(countryResponseList: MutableList<CountryResponse>) {
         countryAdapter.setItems(countryResponseList)
+    }
+
+    override fun updateYears(yearList: MutableList<Int>) {
+        yearAdapter.setItems(yearList)
     }
 
     override fun showCountryList() {
@@ -76,37 +111,23 @@ class InitialActivity : BaseMvpActivity(), InitialView {
     }
 
     override fun hideCountryList() {
+        hideKeyboard(vEtSearch)
         vCountryListBottomSheet.toggle()
     }
 
-    override fun showYearPicker(year: Int) {
-        vNumberPicker.minValue = 2000
-        vNumberPicker.maxValue = 2049
-        vNumberPicker.value = year
-        vYearPickerBottomSheet.toggle()
-    }
-
-    override fun hideYearPicker() {
-        vYearPickerBottomSheet.toggle()
-    }
-
     override fun showChosenCountryName(countryName: String?) {
-        vTvCountryName.text = countryName
+        vTvSelectInitialCountry.text = countryName
     }
 
     override fun showChosenYear(year: Int) {
-        vTvYearNumber.text = year.toString()
+        vTvSelectInitialYear.text = year.toString()
     }
 
     override fun openNavigationActivity() {
         finish()
-        val intent = Intent(this, NavigationActivity::class.java)
-        intent.putExtra("COUNTRY_NAME", true)
-        startActivity(intent)
+        startActivity(Intent(this, NavigationActivity::class.java))
     }
 
-    override fun hideKeyboard() {
-        super.hideKeyboard(vEtSearch)
-    }
+    override fun toggleBottomSheet() = vYearListBottomSheet.toggle()
 
 }

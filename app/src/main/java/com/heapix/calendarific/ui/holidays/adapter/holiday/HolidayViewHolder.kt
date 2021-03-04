@@ -5,7 +5,7 @@ import com.heapix.calendarific.R
 import com.heapix.calendarific.net.responses.holiday.HolidayResponse
 import com.heapix.calendarific.ui.base.adapters.BaseViewHolder
 import io.reactivex.subjects.PublishSubject
-import kotlinx.android.synthetic.main.item_holiday.*
+import kotlinx.android.synthetic.main.item_holiday_card.*
 import org.joda.time.DateTime
 import org.joda.time.format.DateTimeFormat
 
@@ -38,7 +38,7 @@ class HolidayViewHolder(
 
     private fun setupHolidayStatusImage(holidayResponse: HolidayResponse) {
         if (holidayResponse.isNotHolidayPassed) {
-            vIvHolidayStatus.setImageResource(R.drawable.ic_unchecked)
+            vIvHolidayStatus.setImageResource(R.drawable.ic_clock)
         } else {
             vIvHolidayStatus.setImageResource(R.drawable.ic_checked)
         }
