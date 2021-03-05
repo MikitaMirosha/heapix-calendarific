@@ -22,7 +22,7 @@ inline fun SharedPreferences.editMe(operation: (SharedPreferences.Editor) -> Uni
     editMe.apply()
 }
 
-var SharedPreferences.iso: String?
+var SharedPreferences.iso: String
     get() = getString(PreferencesUtils.ISO, "") ?: ""
     set(value) = editMe { it.putString(PreferencesUtils.ISO, value) }
 

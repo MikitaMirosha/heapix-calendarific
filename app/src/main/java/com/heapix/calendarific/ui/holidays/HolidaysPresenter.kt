@@ -8,6 +8,7 @@ import com.heapix.calendarific.net.repo.HolidayRepo
 import com.heapix.calendarific.net.repo.YearRepo
 import com.heapix.calendarific.net.responses.country.CountryResponse
 import com.heapix.calendarific.ui.base.BaseMvpPresenter
+import com.heapix.calendarific.utils.extentions.findCountryNameByIso
 import io.reactivex.Observable
 import org.kodein.di.instance
 
@@ -27,13 +28,14 @@ class HolidaysPresenter : BaseMvpPresenter<HolidaysView>() {
         getHolidaysAndUpdateUi()
         getCountriesAndUpdateUi()
         getYearsAndUpdateUi()
+
         setupOnCountryItemClickListener(countryItemClickObservable)
         setupOnYearItemClickListener(yearItemClickObservable)
     }
 
     private fun getHolidaysAndUpdateUi() {
         addDisposable(
-            holidayRepo.getAllHolidays(countryRepo.getIso() ?: "", yearRepo.getYear())
+            holidayRepo.getAllHolidays(countryRepo.getIso(), yearRepo.getYear())
                 .subscribeOn(schedulers.io())
                 .observeOn(schedulers.ui())
                 .subscribe(
@@ -54,7 +56,8 @@ class HolidaysPresenter : BaseMvpPresenter<HolidaysView>() {
                 .subscribe(
                     {
                         countryResponseList = it
-                        viewState.showChosenCountryName(findCountryNameByIso(it))
+
+                        showChosenCountryName(it)
                         viewState.updateCountries(it)
                     }, {
                         Log.e("TAG", it.toString())
@@ -64,7 +67,7 @@ class HolidaysPresenter : BaseMvpPresenter<HolidaysView>() {
     }
 
     private fun getYearsAndUpdateUi() {
-        viewState.showChosenYear(yearRepo.getYear())
+        showChosenYear(yearRepo.getYear())
         viewState.updateYears(yearRepo.getAllYears())
     }
 
@@ -76,8 +79,9 @@ class HolidaysPresenter : BaseMvpPresenter<HolidaysView>() {
                 .subscribe(
                     {
                         countryRepo.saveIso(it.iso)
-                        onCountryItemClicked()
-                        viewState.showChosenCountryName(it.countryName)
+
+                        getHolidaysAndUpdateUi()
+                        setChosenCountry(it.countryName)
                     }, {
                         Log.e("TAG", it.toString())
                     }
@@ -93,7 +97,7 @@ class HolidaysPresenter : BaseMvpPresenter<HolidaysView>() {
                 .subscribe(
                     {
                         yearRepo.saveYear(it)
-                        onYearItemClicked()
+
                         viewState.showChosenYear(it)
                     }, {
                         Log.e("TAG", it.toString())
@@ -102,20 +106,19 @@ class HolidaysPresenter : BaseMvpPresenter<HolidaysView>() {
         )
     }
 
-    private fun findCountryNameByIso(countryResponse: MutableList<CountryResponse>): String? {
-        return countryResponse.find {
-            countryRepo.getIso() == it.iso
-        }?.countryName
-    }
+    private fun showChosenCountryName(countryName: MutableList<CountryResponse>) =
+        viewState.showChosenCountryName(
+            findCountryNameByIso(
+                countryName,
+                countryRepo.getIso()
+            )
+        )
 
-    private fun onCountryItemClicked() {
-        getHolidaysAndUpdateUi()
+    private fun showChosenYear(year: Int) = viewState.showChosenYear(year)
+
+    private fun setChosenCountry(countryName: String?) {
         viewState.hideCountryList()
-    }
-
-    private fun onYearItemClicked() {
-        getHolidaysAndUpdateUi()
-        viewState.toggleBottomSheet()
+        viewState.showChosenCountryName(countryName)
     }
 
     fun onTextChanged(text: String) {
@@ -131,6 +134,13 @@ class HolidaysPresenter : BaseMvpPresenter<HolidaysView>() {
 
     fun onCountryClicked() = viewState.showCountryList()
 
-    fun onYearClicked() = viewState.toggleBottomSheet()
+    fun onYearClicked() = viewState.showYearList(yearRepo.getYear())
+
+    fun onNumberPickerScrolled(year: Int) {
+        yearRepo.saveYear(year)
+
+        getHolidaysAndUpdateUi()
+        viewState.showChosenYear(yearRepo.getYear())
+    }
 
 }

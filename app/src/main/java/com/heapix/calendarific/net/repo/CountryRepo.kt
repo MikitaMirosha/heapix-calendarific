@@ -19,10 +19,10 @@ class CountryRepo(
         }
     }
 
-    fun getIso(): String? = sharedPreferences.iso
+    fun getIso(): String = sharedPreferences.iso
 
     fun saveIso(iso: String?) {
-        sharedPreferences.iso = iso
+        sharedPreferences.iso = iso ?: ""
     }
 
     fun isIsoInStorage(): Boolean = getIso() != ""

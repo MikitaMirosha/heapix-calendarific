@@ -18,9 +18,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
-        android:paddingTop="@dimen/dp_14"
         app:itemIconSize="@dimen/dp_28"
         app:itemIconTint="@drawable/selector_bottom_navigation"
+        app:labelVisibilityMode="unlabeled"
         app:menu="@menu/menu_bottom_navigation" />
 
 </LinearLayout>

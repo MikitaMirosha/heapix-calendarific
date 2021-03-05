@@ -2,32 +2,27 @@ package com.heapix.calendarific.utils.view
 
 import android.content.Context
 import android.util.AttributeSet
-import android.util.Log
 import android.view.Gravity
-import android.view.MotionEvent
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.FrameLayout
+import kotlin.math.abs
 
-open class BottomSheetLayoutWithBackground @kotlin.jvm.JvmOverloads constructor(
+class BottomSheetLayoutWithBackground @kotlin.jvm.JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : FrameLayout(context, attrs, defStyleAttr) {
 
-    private var shadow: View
+    private var shadow: View = View(context)
     private var bottomSheetLayout: BottomSheetLayout
 
-    var onCollapseListener = {}
-    private var wasFullyExpanded = false
-
     init {
-        shadow = View(context)
-        //shadow.setBackgroundColor(ContextCompat.getColor(context, R.color.light_gray))
         shadow.alpha = 0f
 
         addView(shadow, 0)
 
         bottomSheetLayout = BottomSheetLayout(context, attrs)
         val layoutParams =
-            FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT).apply {
+            LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT).apply {
                 gravity = Gravity.BOTTOM
             }
 
@@ -36,16 +31,14 @@ open class BottomSheetLayoutWithBackground @kotlin.jvm.JvmOverloads constructor(
         addView(bottomSheetLayout, 1)
 
         bottomSheetLayout.setOnProgressListener { progress ->
-            var newAlpha = progress * 0.2f
-            if (Math.abs(newAlpha - shadow.alpha) > 0.005 || newAlpha == 0f || newAlpha == 0.3f) {
+            val newAlpha = progress * 0.2f
+            if (abs(newAlpha - shadow.alpha) > 0.005 || newAlpha == 0f || newAlpha == 0.3f) {
                 shadow.alpha = newAlpha
             }
 
-            if (progress == 1f)
-                wasFullyExpanded = true
-
-            if (progress == 0f && wasFullyExpanded)
-                onCollapseListener()
+            if (progress == 0.0f || progress == 1.0f) {
+                hideKeyboard(this)
+            }
         }
 
         bottomSheetLayout.setOnClickListener {
@@ -53,19 +46,17 @@ open class BottomSheetLayoutWithBackground @kotlin.jvm.JvmOverloads constructor(
         }
     }
 
-    class MyView @kotlin.jvm.JvmOverloads constructor(
-        context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
-    ) : View(context, attrs, defStyleAttr) {
+    fun toggle() = bottomSheetLayout.toggle()
 
-        override fun dispatchTouchEvent(event: MotionEvent?): Boolean {
+    fun isExpanded(): Boolean = bottomSheetLayout.isExpanded()
 
-            when (event!!.actionMasked) {
-                MotionEvent.ACTION_DOWN -> Log.e("test", "ACTION_DOWN")
-                MotionEvent.ACTION_UP -> Log.e("test", "ACTION_UP")
-                MotionEvent.ACTION_CANCEL -> Log.e("test", "ACTION_CANCEL")
-            }
-            return super.dispatchTouchEvent(event)
-        }
+    fun updateBottomSheet(updateBottomSheet: () -> Unit) = updateBottomSheet()
+
+    private fun hide() = bottomSheetLayout.collapse()
+
+    private fun hideKeyboard(view: View) {
+        (context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager)
+            .hideSoftInputFromWindow(view.windowToken, 0)
     }
 
     override fun onFinishInflate() {
@@ -75,23 +66,5 @@ open class BottomSheetLayoutWithBackground @kotlin.jvm.JvmOverloads constructor(
         removeViewAt(2)
         bottomSheetLayout.addView(view)
         bottomSheetLayout.reinit()
-    }
-
-    fun toggle() {
-        bottomSheetLayout.toggle()
-    }
-
-    fun expand() {
-        if (bottomSheetLayout.isExpanded().not()) {
-            bottomSheetLayout.expand()
-        }
-    }
-
-    fun hide() {
-        bottomSheetLayout.collapse()
-    }
-
-    fun isExpanded(): Boolean {
-        return bottomSheetLayout.isExpanded()
     }
 }

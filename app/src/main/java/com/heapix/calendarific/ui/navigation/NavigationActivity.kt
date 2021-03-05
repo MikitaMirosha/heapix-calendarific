@@ -15,6 +15,7 @@ import kotlinx.android.synthetic.main.activity_initial.*
 import kotlinx.android.synthetic.main.activity_navigation.*
 import kotlinx.android.synthetic.main.fragment_holidays.*
 import kotlinx.android.synthetic.main.view_country_list.*
+import kotlinx.android.synthetic.main.view_country_list.view.*
 import kotlinx.android.synthetic.main.view_year_list.*
 
 class NavigationActivity : BaseMvpActivity() {
@@ -26,6 +27,10 @@ class NavigationActivity : BaseMvpActivity() {
     override fun onCreateActivity(savedInstanceState: Bundle?) {
         setupNavigation(savedInstanceState)
         setupNavigationListeners()
+    }
+
+    companion object {
+        private const val DELAY_MILLIS: Long = 2000
     }
 
     private var fragNavController: FragNavController =
@@ -84,14 +89,17 @@ class NavigationActivity : BaseMvpActivity() {
 
         Handler(Looper.getMainLooper()).postDelayed(
             { isOnDoubleBackPressed = false },
-            2000
+            DELAY_MILLIS
         )
     }
 
     override fun onBackPressed() {
         if (vCountryListHolidaysBottomSheet.isExpanded()) {
             vEtSearch.text.clear()
+            vEtSearch.clearFocus()
             vCountryListHolidaysBottomSheet.toggle()
+        } else if (vYearListHolidaysBottomSheet.isExpanded()) {
+            vYearListHolidaysBottomSheet.toggle()
         } else {
             onDoubleBackPressed()
         }

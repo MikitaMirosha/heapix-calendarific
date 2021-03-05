@@ -1,4 +1,4 @@
-package com.insspring.poifox.utils
+package com.heapix.calendarific.utils
 
 import android.text.Editable
 import android.text.TextWatcher

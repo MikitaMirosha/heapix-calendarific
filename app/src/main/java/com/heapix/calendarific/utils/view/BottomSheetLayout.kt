@@ -2,23 +2,17 @@ package com.heapix.calendarific.utils.view
 
 import android.animation.ValueAnimator
 import android.content.Context
-import android.os.Build
 import android.util.AttributeSet
-import android.util.Log
 import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
 import android.widget.FrameLayout
 import androidx.annotation.AttrRes
 import com.heapix.calendarific.R
 import kotlinx.android.synthetic.main.view_country_list.*
 import kotlinx.android.synthetic.main.view_country_list.view.*
-
-/**
- * Created by quentin on 07/11/2017.
- */
+import kotlin.math.abs
 
 class BottomSheetLayout : FrameLayout {
 
@@ -39,30 +33,13 @@ class BottomSheetLayout : FrameLayout {
 
     var animationDuration: Long = 300
 
-    override fun setOnClickListener(l: OnClickListener?) {
-        clickListener = l
+    override fun setOnClickListener(onClickListener: OnClickListener?) {
+        clickListener = onClickListener
     }
 
     private var progressListener: OnProgressListener? = null
 
-    fun setOnProgressListener(l: OnProgressListener?) {
-        progressListener = l
-    }
-
-    private val touchToDragListener = TouchToDragListener(true)
-
-    val outsideTouchToDragListener = TouchToDragListener(
-        touchToDrag = true,
-        forceClickWithoutCheck = true
-    )
-
-    fun disableTouch() {
-        setOnTouchListener(null)
-    }
-
-    fun enableTouch() {
-        setOnTouchListener(touchToDragListener)
-    }
+    private val touchToDragListener = TouchToDragListener(true, false)
 
     fun setOnProgressListener(l: (progress: Float) -> Unit) {
         progressListener = object : OnProgressListener {
@@ -74,10 +51,6 @@ class BottomSheetLayout : FrameLayout {
 
     fun isExpanded(): Boolean {
         return progress == 1f
-    }
-
-    fun setHideOnClickOutsideEnabled(isEnabled: Boolean) {
-        hideOnClickOutside = isEnabled
     }
 
     constructor(context: Context) : super(context) {
@@ -108,9 +81,7 @@ class BottomSheetLayout : FrameLayout {
 
         setCollapsedHeight(collapsedHeight)
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            minimumHeight = Math.max(minimumHeight, collapsedHeight)
-        }
+        minimumHeight = Math.max(minimumHeight, collapsedHeight)
 
         a.recycle()
 
@@ -178,11 +149,9 @@ class BottomSheetLayout : FrameLayout {
         }
     }
 
-    fun setCollapsedHeight(height: Int) {
+    private fun setCollapsedHeight(height: Int) {
         collapsedHeight = height
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            minimumHeight = Math.max(minimumHeight, collapsedHeight)
-        }
+        minimumHeight = Math.max(minimumHeight, collapsedHeight)
     }
 
     fun toggle() {
@@ -224,28 +193,6 @@ class BottomSheetLayout : FrameLayout {
         valueAnimator.start()
     }
 
-    fun hideKeyboard(view: View) {
-        val inputMethodManager: InputMethodManager =
-            context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
-    }
-
-    fun expand() {
-        if (valueAnimator.isRunning) {
-            valueAnimator.cancel()
-        }
-        valueAnimator = ValueAnimator.ofFloat(progress, 1f)
-
-        valueAnimator.addUpdateListener { animation ->
-            val progress = animation.animatedValue as Float
-            animate(progress)
-        }
-
-        valueAnimator.duration = (animationDuration * (1 - progress)).toLong()
-
-        valueAnimator.start()
-    }
-
     //1 is expanded, 0 is collapsed
     private fun animate(progress: Float) {
         this.progress = progress
@@ -263,15 +210,13 @@ class BottomSheetLayout : FrameLayout {
         var progress = this.progress
         if (!startsCollapsed) {
             isScrollingUp = false
-            progress = Math.max(0f, 1 - distance / totalDistance)
+            progress = 0f.coerceAtLeast(1 - distance / totalDistance)
         } else if (startsCollapsed) {
             isScrollingUp = true
-            progress = Math.min(1f, -distance / totalDistance)
+            progress = 1f.coerceAtMost(-distance / totalDistance)
         }
         progress = Math.max(0f, Math.min(1f, progress))
         animate(progress)
-
-        Log.i("123123", "animateScroll")
     }
 
     private fun animateScrollEnd() {
@@ -280,16 +225,11 @@ class BottomSheetLayout : FrameLayout {
         }
         val duration: Long
         val progressLimit = if (isScrollingUp) 0.2f else 0.8f
+
         valueAnimator = if (progress > progressLimit) {
-
-            Log.i("123123", "animate to 1f")
-
             duration = (animationDuration * (1 - progress)).toLong()
             ValueAnimator.ofFloat(progress, 1f)
         } else {
-
-            Log.i("123123", "animate to 0f")
-
             duration = (animationDuration * progress).toLong()
             ValueAnimator.ofFloat(progress, 0f)
         }
@@ -302,14 +242,11 @@ class BottomSheetLayout : FrameLayout {
         valueAnimator.duration = duration
 
         valueAnimator.start()
-
-
     }
 
     override fun onInterceptTouchEvent(ev: MotionEvent?): Boolean {
         if (ev != null) {
             return false
-//            return touchToDragListener.onTouch(this, ev)
         }
         return false
     }
@@ -356,7 +293,7 @@ class BottomSheetLayout : FrameLayout {
         private val touchToDrag: Boolean,
         var forceClickWithoutCheck: Boolean = false
     ) :
-        View.OnTouchListener {
+        OnTouchListener {
 
         private val CLICK_ACTION_THRESHOLD = 50
         private var startX: Float = 0.toFloat()
@@ -364,49 +301,29 @@ class BottomSheetLayout : FrameLayout {
         private var startTime: Double = 0.toDouble()
 
         override fun onTouch(v: View, ev: MotionEvent): Boolean {
-            //val action = MotionEventCompat.getActionMasked(ev)
-            val action = ev.action
 
-            when (action) {
+            when (ev.action) {
                 MotionEvent.ACTION_DOWN -> {
                     if (ev.pointerCount == 1) {
                         startX = ev.rawX
                         startY = ev.rawY
                         startTime = System.currentTimeMillis().toDouble()
                         startsCollapsed = progress < 0.5
-                        vEtSearch.text.clear()
-                        hideKeyboard(v)
                     }
-
-                    Log.i("123123", "down")
                 }
 
                 MotionEvent.ACTION_MOVE -> {
-
                     val y = ev.rawY
-
                     animateScroll(startY, y)
 
                     invalidate()
-
-                    Log.i("123123", "move")
                 }
 
                 MotionEvent.ACTION_UP -> {
-
-                    Log.i("123123", "action up")
-
                     val endX = ev.rawX
                     val endY = ev.rawY
                     if (isAClick(startX, endX, startY, endY, System.currentTimeMillis())) {
                         if (!forceClickWithoutCheck && performChildClick(ev.x, ev.y)) {
-                            Log.i("123123", "action up")
-
-                            // todo: there is a bug when u click very fast and drag less then 50 pixels
-                            // view goes a bit to bottom, but doesnt hides
-                            // i fixed it, but for more stable fix u can uncommit animateScrollEnd()
-                            // and test it. i have no time for it (and i dont want to :)
-//                            animateScrollEnd()
                             return true
                         }
 
@@ -416,13 +333,11 @@ class BottomSheetLayout : FrameLayout {
                                     onClick()
                                 }
                             } else {
-                                onClick()// WE HAVE A CLICK!!
+                                onClick()
                             }
                             return true
                         }
                     }
-
-                    Log.i("123123", "animateScrollEnd")
                     animateScrollEnd()
                 }
             }
@@ -440,16 +355,16 @@ class BottomSheetLayout : FrameLayout {
             endY: Float,
             endTime: Long
         ): Boolean {
-            val differenceX = Math.abs(startX - endX)
-            val differenceY = Math.abs(startY - endY)
-            val differenceTime = Math.abs(startTime - endTime)
-            return !(differenceX > CLICK_ACTION_THRESHOLD || differenceY > CLICK_ACTION_THRESHOLD || differenceTime > 400)
+            val differenceX = abs(startX - endX)
+            val differenceY = abs(startY - endY)
+            val differenceTime = abs(startTime - endTime)
+            return !(differenceX > CLICK_ACTION_THRESHOLD ||
+                    differenceY > CLICK_ACTION_THRESHOLD ||
+                    differenceTime > 400)
         }
     }
 
-    private fun onClick() {
-        clickListener?.onClick(this)
-    }
+    private fun onClick() = clickListener?.onClick(this)
 
     interface OnProgressListener {
         fun onProgress(progress: Float)

@@ -5,11 +5,15 @@ import com.heapix.calendarific.ui.base.BaseMvpView
 
 interface InitialView : BaseMvpView {
     fun updateCountries(countryResponseList: MutableList<CountryResponse>)
-    fun updateYears(yearList: MutableList<Int>)
+
     fun showCountryList()
     fun hideCountryList()
+
+    fun showYearList(year: Int)
+    fun hideYearList()
+
     fun showChosenCountryName(countryName: String?)
     fun showChosenYear(year: Int)
+
     fun openNavigationActivity()
-    fun toggleBottomSheet()
 }

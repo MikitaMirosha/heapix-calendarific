@@ -47,12 +47,4 @@ abstract class BaseMvpDialogFragment : MvpDialogFragment(),
     override fun handleRestError(e: Throwable) {
         (activity as? BaseMvpActivity)?.handleRestError(e)
     }
-
-//    override fun requestPermissions(vararg permissions: String, listener: OnPermissionsListener) {
-//        (activity as? BaseMvpActivity)?.requestPermissions(*permissions, listener = listener)
-//    }
-
-//    override fun hideKeyboard() {
-//        (activity as? BaseMvpActivity)?.hideKeyboard()
-//    }
 }

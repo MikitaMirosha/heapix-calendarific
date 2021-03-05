@@ -35,24 +35,25 @@
                 android:textStyle="bold" />
 
             <TextView
-                style="@style/InitialActivityDescriptionText"
+                style="@style/DefaultNormalText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/dp_18"
+                android:layout_marginTop="@dimen/dp_18"
                 android:text="@string/selection_description" />
 
             <TextView
-                style="@style/InitialActivityDescriptionText"
+                style="@style/DefaultNormalText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/dp_18"
+                android:layout_marginTop="@dimen/dp_18"
                 android:text="@string/please_select" />
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_marginTop="@dimen/dp_28"
-                android:layout_marginBottom="@dimen/dp_18"
                 android:orientation="vertical">
 
                 <LinearLayout
@@ -64,16 +65,17 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        style="@style/InitialActivityCategoryText"
+                        style="@style/DefaultBoldText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/country_double_dots" />
 
                     <TextView
                         android:id="@+id/vTvSelectInitialCountry"
-                        style="@style/InitialActivitySelectCategoryText"
+                        style="@style/DefaultNormalText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dp_8"
                         android:ellipsize="end"
                         android:maxLines="1"
                         android:text="@string/select_country" />
@@ -88,36 +90,41 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        style="@style/InitialActivityCategoryText"
+                        style="@style/DefaultBoldText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/year_double_dots" />
 
                     <TextView
                         android:id="@+id/vTvSelectInitialYear"
-                        style="@style/InitialActivitySelectCategoryText"
+                        style="@style/DefaultNormalText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dp_8"
                         android:ellipsize="end"
                         android:maxLines="1"
                         android:text="@string/select_year" />
 
                 </LinearLayout>
 
-            </LinearLayout>
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
-            <TextView
-                android:id="@+id/vTvNext"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="end"
-                android:layout_marginVertical="@dimen/dp_18"
-                android:layout_marginEnd="@dimen/dp_22"
-                android:gravity="bottom"
-                android:text="@string/next"
-                android:textColor="@color/purple"
-                android:textSize="@dimen/sp_16"
-                android:textStyle="bold" />
+                    <TextView
+                        android:id="@+id/vTvNext"
+                        style="@style/DefaultBoldText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/dp_22"
+                        android:text="@string/next"
+                        android:textSize="@dimen/sp_16"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </LinearLayout>
 
         </LinearLayout>
 

@@ -6,6 +6,9 @@ buildscript {
     // joda time
     ext.joda_version = '2.10.6'
 
+    // glide
+    ext.glide_version = '4.11.0'
+
     // fragment navigation
     ext.fragment_nav_version = '3.2.0'
 
@@ -31,8 +34,8 @@ buildscript {
     // prdownloader
     ext.prdownloader_version = '0.6.0'
 
-    // month and year picker
-    ext.monthandyearpicker_version = '1.3.0'
+    // // number picker
+    ext.number_picker_version = '1.2.0'
 
     repositories {
         google()

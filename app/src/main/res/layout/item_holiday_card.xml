@@ -42,7 +42,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginHorizontal="@dimen/dp_10"
                 android:layout_marginVertical="@dimen/dp_10"
-                android:src="@drawable/ic_checked" />
+                tools:src="@drawable/ic_checked" />
 
         </LinearLayout>
 

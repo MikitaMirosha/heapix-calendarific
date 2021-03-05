@@ -10,11 +10,17 @@
         <item name="android:windowEnableSplitTouch">false</item>
     </style>
 
+    <style name="DialogTheme" parent="Theme.AppCompat.Light.Dialog">
+        <item name="colorAccent">@color/black</item>
+        <item name="android:fontFamily">@font/ptsans</item>
+        <item name="android:textSize">@dimen/sp_18</item>
+    </style>
+
     <style name="PtSansText" parent="android:Widget.TextView">
         <item name="android:fontFamily">@font/ptsans</item>
     </style>
 
-    <style name="TopAppBarText">
+    <style name="AppBarText">
         <item name="android:textSize">@dimen/sp_18</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/black</item>
@@ -22,28 +28,22 @@
         <item name="android:layout_marginBottom">@dimen/dp_14</item>
     </style>
 
-    <style name="DialogTheme" parent="Theme.AppCompat.Light.Dialog">
-        <item name="colorAccent">@color/black</item>
-        <item name="android:fontFamily">@font/ptsans</item>
-        <item name="android:textSize">@dimen/sp_18</item>
-    </style>
-
-    <style name="InitialActivityDescriptionText">
-        <item name="android:layout_marginTop">@dimen/dp_18</item>
+    <style name="DefaultNormalText">
         <item name="android:textColor">@color/purple</item>
         <item name="android:textSize">@dimen/sp_14</item>
     </style>
 
-    <style name="InitialActivityCategoryText">
+    <style name="DefaultBoldText">
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/purple</item>
         <item name="android:textSize">@dimen/sp_14</item>
     </style>
 
-    <style name="InitialActivitySelectCategoryText">
-        <item name="android:layout_marginStart">@dimen/dp_8</item>
-        <item name="android:textColor">@color/purple</item>
-        <item name="android:textSize">@dimen/sp_14</item>
+    <style name="BottomSheetItemText">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">@dimen/sp_16</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:maxLines">1</item>
     </style>
 
 </resources>

@@ -1,4 +1,4 @@
-package com.heapix.calendarific.utils.view
+package com.heapix.calendarific.utils.extentions
 
 import android.view.View
 

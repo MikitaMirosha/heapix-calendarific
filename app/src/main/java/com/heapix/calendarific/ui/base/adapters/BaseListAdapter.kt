@@ -1,10 +1,7 @@
 package com.heapix.calendarific.ui.base.adapters
 
 import androidx.recyclerview.widget.RecyclerView
-import com.heapix.calendarific.MyApp
-import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
-import org.kodein.di.instance
 
 abstract class BaseListAdapter<T>(
     proposedItems: List<T> = ArrayList(),
@@ -13,17 +10,12 @@ abstract class BaseListAdapter<T>(
 ) : RecyclerView.Adapter<BaseViewHolder<in T>>() {
     protected val items: ArrayList<T> = ArrayList(proposedItems)
 
-//    private val compositeDisposable: CompositeDisposable by MyApp.kodein.instance()
-
     override fun onBindViewHolder(holder: BaseViewHolder<in T>, position: Int) {
         val item = getItem(position)
         holder.bind(item)
         if (listener != null) {
             holder.setOnClickListener { listener.onItemClick(item, holder.itemView) }
         }
-//        if (colourAlternateItems) {
-//            holder.setPositionInList(position)
-//        }
     }
 
     override fun onViewRecycled(holder: BaseViewHolder<in T>) {
@@ -119,7 +111,5 @@ abstract class BaseListAdapter<T>(
         }
     }
 
-    fun addDisposable(disposable: Disposable) {
-//        compositeDisposable.add(disposable)
-    }
+    fun addDisposable(disposable: Disposable) {}
 }

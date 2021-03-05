@@ -20,26 +20,24 @@ class InitialPresenter : BaseMvpPresenter<InitialView>() {
 
     private lateinit var countryResponseList: MutableList<CountryResponse>
 
-    fun onCreate(
-        countryItemClickObservable: Observable<CountryResponse>,
-        yearItemClickObservable: Observable<Int>
-    ) {
+    fun onCreate(countryItemClickObservable: Observable<CountryResponse>) {
         checkIsoAndYearInStorage()
         setCurrentYearInStorage()
+
         getCountriesAndUpdateUi()
-        getYearsAndUpdateUi()
+
         setupOnCountryItemClickListener(countryItemClickObservable)
-        setupOnYearItemClickListener(yearItemClickObservable)
     }
 
     private fun checkIsoAndYearInStorage() {
-        if (countryRepo.isIsoInStorage() && yearRepo.isYearInStorage()) {
+        if (areIsoAndYearInStorage()) {
             viewState.openNavigationActivity()
         }
     }
 
     private fun setCurrentYearInStorage() {
         yearRepo.saveYear(LocalDate().yearOfEra)
+        viewState.showChosenYear(LocalDate().yearOfEra)
     }
 
     private fun getCountriesAndUpdateUi() {
@@ -50,6 +48,7 @@ class InitialPresenter : BaseMvpPresenter<InitialView>() {
                 .subscribe(
                     {
                         countryResponseList = it
+
                         viewState.updateCountries(it)
                     }, {
                         Log.e("TAG", it.toString())
@@ -58,20 +57,16 @@ class InitialPresenter : BaseMvpPresenter<InitialView>() {
         )
     }
 
-    private fun getYearsAndUpdateUi() {
-        viewState.updateYears(yearRepo.getAllYears())
-    }
-
-    private fun setupOnCountryItemClickListener(countryResponseItemClickObservable: Observable<CountryResponse>) {
+    private fun setupOnCountryItemClickListener(countryItemClickObservable: Observable<CountryResponse>) {
         addDisposable(
-            countryResponseItemClickObservable
+            countryItemClickObservable
                 .subscribeOn(schedulers.io())
                 .observeOn(schedulers.ui())
                 .subscribe(
                     {
                         countryRepo.saveIso(it.iso)
-                        onCountryItemClicked()
-                        viewState.showChosenCountryName(it.countryName)
+
+                        setChosenCountry(it.countryName)
                     }, {
                         Log.e("TAG", it.toString())
                     }
@@ -79,25 +74,12 @@ class InitialPresenter : BaseMvpPresenter<InitialView>() {
         )
     }
 
-    private fun setupOnYearItemClickListener(yearItemClickObservable: Observable<Int>) {
-        addDisposable(
-            yearItemClickObservable
-                .subscribeOn(schedulers.io())
-                .observeOn(schedulers.ui())
-                .subscribe(
-                    {
-                        yearRepo.saveYear(it)
-                        viewState.toggleBottomSheet()
-                        viewState.showChosenYear(it)
-                    }, {
-                        Log.e("TAG", it.toString())
-                    }
-                )
-        )
-    }
+    private fun areIsoAndYearInStorage(): Boolean =
+        countryRepo.isIsoInStorage() && yearRepo.isYearInStorage()
 
-    private fun onCountryItemClicked() {
+    private fun setChosenCountry(countryName: String?) {
         viewState.hideCountryList()
+        viewState.showChosenCountryName(countryName)
     }
 
     fun onTextChanged(text: String) {
@@ -113,10 +95,15 @@ class InitialPresenter : BaseMvpPresenter<InitialView>() {
 
     fun onSelectCountryClicked() = viewState.showCountryList()
 
-    fun onSelectYearClicked() = viewState.toggleBottomSheet()
+    fun onSelectYearClicked() = viewState.showYearList(yearRepo.getYear())
+
+    fun onNumberPickerScrolled(year: Int) {
+        yearRepo.saveYear(year)
+        viewState.showChosenYear(yearRepo.getYear())
+    }
 
     fun onNextButtonClicked() {
-        if (countryRepo.isIsoInStorage() && yearRepo.isYearInStorage()) {
+        if (areIsoAndYearInStorage()) {
             viewState.openNavigationActivity()
         } else {
             showMessage(R.string.please_enter_full_data)

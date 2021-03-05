@@ -1,6 +1,7 @@
 package com.heapix.calendarific.ui.holidays.adapter.holiday
 
 import android.view.View
+import com.bumptech.glide.Glide
 import com.heapix.calendarific.R
 import com.heapix.calendarific.net.responses.holiday.HolidayResponse
 import com.heapix.calendarific.ui.base.adapters.BaseViewHolder
@@ -22,13 +23,17 @@ class HolidayViewHolder(
         setupClickListener(model)
     }
 
+    companion object {
+        private const val PATTERN: String = "d MMM yyyy"
+    }
+
     private fun setupHolidayName(holidayResponse: HolidayResponse) {
         vTvHolidayName.text = holidayResponse.name
     }
 
     private fun setupHolidayDate(holidayResponse: HolidayResponse) {
         val parser = DateTime(holidayResponse.date?.iso)
-        val formatter = DateTimeFormat.forPattern("d MMM yyyy")
+        val formatter = DateTimeFormat.forPattern(PATTERN)
         vTvHolidayDate.text = parser.toString(formatter)
     }
 
@@ -38,9 +43,15 @@ class HolidayViewHolder(
 
     private fun setupHolidayStatusImage(holidayResponse: HolidayResponse) {
         if (holidayResponse.isNotHolidayPassed) {
-            vIvHolidayStatus.setImageResource(R.drawable.ic_clock)
+            Glide.with(context)
+                .load(holidayResponse.isNotHolidayPassed)
+                .placeholder(R.drawable.ic_clock)
+                .into(vIvHolidayStatus)
         } else {
-            vIvHolidayStatus.setImageResource(R.drawable.ic_checked)
+            Glide.with(context)
+                .load(holidayResponse.isNotHolidayPassed)
+                .placeholder(R.drawable.ic_checked)
+                .into(vIvHolidayStatus)
         }
     }
 

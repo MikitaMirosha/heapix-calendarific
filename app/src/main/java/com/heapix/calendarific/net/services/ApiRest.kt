@@ -16,13 +16,11 @@ class ApiRest {
     companion object {
 
         private const val BASE_URL: String = "https://calendarific.com/api/v2/"
-        private const val API_KEY: String = "695c69c7414e935be7cc43d17666bbe916b62863"
+        private const val API_KEY: String = "api_key"
+        private const val API_VALUE: String = "695c69c7414e935be7cc43d17666bbe916b62863"
+        private const val TIMEOUT: Long = 10
 
         internal fun getApi(): Retrofit {
-
-            val interceptor = HttpLoggingInterceptor()
-            interceptor.level = HttpLoggingInterceptor.Level.BASIC
-
             val client = getOkHttpClient()
 
             val builder = Retrofit.Builder().baseUrl(BASE_URL)
@@ -50,8 +48,8 @@ class ApiRest {
                     val url = originalHttpUrl
                         .newBuilder()
                         .addQueryParameter(
-                            "api_key",
-                            API_KEY
+                            API_KEY,
+                            API_VALUE
                         )
                         .build()
                     request.url(url)
@@ -61,9 +59,9 @@ class ApiRest {
                     val requestBuilder = chain.request().newBuilder()
                     chain.proceed(requestBuilder.build())
                 })
-                .connectTimeout(10, TimeUnit.SECONDS)
-                .writeTimeout(10, TimeUnit.SECONDS)
-                .readTimeout(10, TimeUnit.SECONDS)
+                .connectTimeout(TIMEOUT, TimeUnit.SECONDS)
+                .writeTimeout(TIMEOUT, TimeUnit.SECONDS)
+                .readTimeout(TIMEOUT, TimeUnit.SECONDS)
                 .build()
         }
     }
