@@ -1,3 +1,26 @@
 <resources>
     <string name="app_name">Calendarific</string>
+
+    <string name="discover_holidays_worldwide">Discover holidays worldwide!</string>
+    <string name="selection_description">Find any past and future holidays
+        in any country all around the world.</string>
+    <string name="please_select">Please, select desired country and year.</string>
+    <string name="select_country">Select country</string>
+    <string name="select_year">Select year</string>
+    <string name="next">Next</string>
+    <string name="country_double_dots">Country: </string>
+    <string name="year_double_dots">Year: </string>
+    <string name="please_fill_all_fields">Please, fill all fields</string>
+
+    <string name="home">home</string>
+    <string name="calendar">calendar</string>
+    <string name="world">world</string>
+
+    <string name="country">Country</string>
+    <string name="year">Year</string>
+
+    <string name="select_country_and_year">Please, select desired country and year</string>
+
+    <string name="press_back_again_to_exit">Press back again to exit</string>
+    <string name="search_country">Search for a country</string>
 </resources>

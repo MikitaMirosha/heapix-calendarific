@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/light_purple"
+    android:overScrollMode="never">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/dp_36"
+                android:src="@drawable/ic_celebration" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/dp_18"
+                android:layout_marginTop="@dimen/dp_28"
+                android:text="@string/discover_holidays_worldwide"
+                android:textColor="@color/purple"
+                android:textSize="@dimen/sp_32"
+                android:textStyle="bold" />
+
+            <TextView
+                style="@style/DefaultNormalText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/dp_18"
+                android:layout_marginTop="@dimen/dp_18"
+                android:text="@string/selection_description" />
+
+            <TextView
+                style="@style/DefaultNormalText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/dp_18"
+                android:layout_marginTop="@dimen/dp_18"
+                android:text="@string/please_select" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/dp_28"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/vLlSelectCountry"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/dp_18"
+                    android:layout_marginVertical="@dimen/dp_18"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/DefaultBoldText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/country_double_dots" />
+
+                    <TextView
+                        android:id="@+id/vTvSelectInitialCountry"
+                        style="@style/DefaultNormalText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dp_8"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:text="@string/select_country" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/vLlSelectYear"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/dp_18"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/DefaultBoldText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/year_double_dots" />
+
+                    <TextView
+                        android:id="@+id/vTvSelectInitialYear"
+                        style="@style/DefaultNormalText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dp_8"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:text="@string/select_year" />
+
+                </LinearLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/vTvNext"
+                        style="@style/DefaultBoldText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/dp_22"
+                        android:text="@string/next"
+                        android:textSize="@dimen/sp_16"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <com.heapix.calendarific.utils.view.BottomSheetLayoutWithBackground
+        android:id="@+id/vCountryListBottomSheet"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingTop="@dimen/dp_28"
+        app:collapsedHeight="0dp">
+
+        <include
+            layout="@layout/view_country_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="bottom" />
+
+    </com.heapix.calendarific.utils.view.BottomSheetLayoutWithBackground>
+
+    <com.heapix.calendarific.utils.view.BottomSheetLayoutWithBackground
+        android:id="@+id/vYearListBottomSheet"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingTop="@dimen/dp_28"
+        app:collapsedHeight="0dp">
+
+        <include
+            layout="@layout/view_year_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom" />
+
+    </com.heapix.calendarific.utils.view.BottomSheetLayoutWithBackground>
+
+</FrameLayout>
