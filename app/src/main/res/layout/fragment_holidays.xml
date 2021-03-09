@@ -28,11 +28,11 @@
                     android:id="@+id/vTvCountry"
                     style="@style/AppBarText"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
+                    android:layout_height="match_parent"
                     android:layout_marginHorizontal="@dimen/dp_10"
                     android:layout_weight="0.8"
                     android:ellipsize="end"
+                    android:gravity="center_vertical"
                     android:maxLines="1"
                     tools:text="Country" />
 
@@ -40,12 +40,11 @@
                     android:id="@+id/vTvYear"
                     style="@style/AppBarText"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
+                    android:layout_height="match_parent"
                     android:layout_marginHorizontal="@dimen/dp_10"
                     android:layout_weight="0.2"
                     android:ellipsize="end"
-                    android:gravity="end"
+                    android:gravity="end|center"
                     android:maxLines="1"
                     android:textColor="@color/gray"
                     tools:text="Year" />

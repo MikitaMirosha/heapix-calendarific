@@ -17,7 +17,7 @@ class CountryViewHolder(
     }
 
     private fun setupCountryName(countryResponse: CountryResponse) {
-        vTvCountryNameItem.text = countryResponse.countryName
+        vTvCountryNameItem.text = countryResponse.countryName ?: ""
     }
 
     private fun setupClickListener(countryResponse: CountryResponse) {

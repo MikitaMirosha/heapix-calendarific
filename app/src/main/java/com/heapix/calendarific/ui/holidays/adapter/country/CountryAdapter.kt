@@ -11,10 +11,8 @@ import io.reactivex.subjects.PublishSubject
 
 class CountryAdapter : BaseListAdapter<CountryResponse>() {
 
-    private val countryPublishSubject: PublishSubject<CountryResponse> =
-        PublishSubject.create()
-    val countryItemClickObservable: Observable<CountryResponse> =
-        countryPublishSubject
+    private val countryPublishSubject: PublishSubject<CountryResponse> = PublishSubject.create()
+    val countryItemClickObservable: Observable<CountryResponse> = countryPublishSubject
 
     override fun onCreateViewHolder(
         parent: ViewGroup,

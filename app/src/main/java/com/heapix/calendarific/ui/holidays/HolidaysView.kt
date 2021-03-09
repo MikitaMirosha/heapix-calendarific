@@ -7,7 +7,6 @@ import com.heapix.calendarific.ui.base.BaseMvpView
 interface HolidaysView : BaseMvpView {
     fun updateHolidays(holidayResponseList: MutableList<HolidayResponse>)
     fun updateCountries(countryResponseList: MutableList<CountryResponse>)
-    fun updateYears(yearList: MutableList<Int>)
 
     fun showCountryList()
     fun hideCountryList()

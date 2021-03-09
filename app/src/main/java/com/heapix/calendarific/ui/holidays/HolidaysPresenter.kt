@@ -21,16 +21,12 @@ class HolidaysPresenter : BaseMvpPresenter<HolidaysView>() {
 
     private lateinit var countryResponseList: MutableList<CountryResponse>
 
-    fun onCreate(
-        countryItemClickObservable: Observable<CountryResponse>,
-        yearItemClickObservable: Observable<Int>
-    ) {
+    fun onCreate(countryItemClickObservable: Observable<CountryResponse>) {
         getHolidaysAndUpdateUi()
         getCountriesAndUpdateUi()
         getYearsAndUpdateUi()
 
         setupOnCountryItemClickListener(countryItemClickObservable)
-        setupOnYearItemClickListener(yearItemClickObservable)
     }
 
     private fun getHolidaysAndUpdateUi() {
@@ -67,8 +63,7 @@ class HolidaysPresenter : BaseMvpPresenter<HolidaysView>() {
     }
 
     private fun getYearsAndUpdateUi() {
-        showChosenYear(yearRepo.getYear())
-        viewState.updateYears(yearRepo.getAllYears())
+        viewState.showChosenYear(yearRepo.getYear())
     }
 
     private fun setupOnCountryItemClickListener(countryItemClickObservable: Observable<CountryResponse>) {
@@ -81,24 +76,7 @@ class HolidaysPresenter : BaseMvpPresenter<HolidaysView>() {
                         countryRepo.saveIso(it.iso)
 
                         getHolidaysAndUpdateUi()
-                        setChosenCountry(it.countryName)
-                    }, {
-                        Log.e("TAG", it.toString())
-                    }
-                )
-        )
-    }
-
-    private fun setupOnYearItemClickListener(yearItemClickObservable: Observable<Int>) {
-        addDisposable(
-            yearItemClickObservable
-                .subscribeOn(schedulers.io())
-                .observeOn(schedulers.ui())
-                .subscribe(
-                    {
-                        yearRepo.saveYear(it)
-
-                        viewState.showChosenYear(it)
+                        setupCountryNameAndHideList(it.countryName)
                     }, {
                         Log.e("TAG", it.toString())
                     }
@@ -114,9 +92,7 @@ class HolidaysPresenter : BaseMvpPresenter<HolidaysView>() {
             )
         )
 
-    private fun showChosenYear(year: Int) = viewState.showChosenYear(year)
-
-    private fun setChosenCountry(countryName: String?) {
+    private fun setupCountryNameAndHideList(countryName: String?) {
         viewState.hideCountryList()
         viewState.showChosenCountryName(countryName)
     }
@@ -136,7 +112,7 @@ class HolidaysPresenter : BaseMvpPresenter<HolidaysView>() {
 
     fun onYearClicked() = viewState.showYearList(yearRepo.getYear())
 
-    fun onNumberPickerScrolled(year: Int) {
+    fun onNumberPickerValueChanged(year: Int) {
         yearRepo.saveYear(year)
 
         getHolidaysAndUpdateUi()

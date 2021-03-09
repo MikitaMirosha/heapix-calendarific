@@ -2,6 +2,7 @@ package com.heapix.calendarific.utils.view
 
 import android.animation.ValueAnimator
 import android.content.Context
+import android.os.Build
 import android.util.AttributeSet
 import android.view.KeyEvent
 import android.view.MotionEvent
@@ -31,7 +32,7 @@ class BottomSheetLayout : FrameLayout {
 
     private var hideOnClickOutside = true
 
-    var animationDuration: Long = 300
+    private var animationDuration: Long = 300
 
     override fun setOnClickListener(onClickListener: OnClickListener?) {
         clickListener = onClickListener
@@ -39,7 +40,7 @@ class BottomSheetLayout : FrameLayout {
 
     private var progressListener: OnProgressListener? = null
 
-    private val touchToDragListener = TouchToDragListener(true, false)
+    private val touchToDragListener = TouchToDragListener(true, forceClickWithoutCheck = false)
 
     fun setOnProgressListener(l: (progress: Float) -> Unit) {
         progressListener = object : OnProgressListener {
@@ -81,7 +82,9 @@ class BottomSheetLayout : FrameLayout {
 
         setCollapsedHeight(collapsedHeight)
 
-        minimumHeight = Math.max(minimumHeight, collapsedHeight)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            minimumHeight = minimumHeight.coerceAtLeast(collapsedHeight)
+        }
 
         a.recycle()
 
@@ -90,7 +93,7 @@ class BottomSheetLayout : FrameLayout {
         setOnTouchListener(touchToDragListener)
 
         if (height == 0) {
-            addOnLayoutChangeListener(object : View.OnLayoutChangeListener {
+            addOnLayoutChangeListener(object : OnLayoutChangeListener {
                 override fun onLayoutChange(
                     view: View,
                     i: Int,
@@ -128,7 +131,7 @@ class BottomSheetLayout : FrameLayout {
 
     fun reinit() {
         if (height == 0) {
-            addOnLayoutChangeListener(object : View.OnLayoutChangeListener {
+            addOnLayoutChangeListener(object : OnLayoutChangeListener {
                 override fun onLayoutChange(
                     view: View,
                     i: Int,
@@ -151,7 +154,7 @@ class BottomSheetLayout : FrameLayout {
 
     private fun setCollapsedHeight(height: Int) {
         collapsedHeight = height
-        minimumHeight = Math.max(minimumHeight, collapsedHeight)
+        minimumHeight = minimumHeight.coerceAtLeast(collapsedHeight)
     }
 
     fun toggle() {
@@ -215,7 +218,7 @@ class BottomSheetLayout : FrameLayout {
             isScrollingUp = true
             progress = 1f.coerceAtMost(-distance / totalDistance)
         }
-        progress = Math.max(0f, Math.min(1f, progress))
+        progress = 0f.coerceAtLeast(1f.coerceAtMost(progress))
         animate(progress)
     }
 
@@ -329,7 +332,7 @@ class BottomSheetLayout : FrameLayout {
 
                         if (touchToDrag && clickListener != null) {
                             if (hideOnClickOutside) {
-                                if (checkCoordinatesOutside(ev.x, ev.y) || forceClickWithoutCheck) {
+                                if (checkCoordinatesOutside(ev.y) || forceClickWithoutCheck) {
                                     onClick()
                                 }
                             } else {
@@ -344,7 +347,7 @@ class BottomSheetLayout : FrameLayout {
             return true
         }
 
-        private fun checkCoordinatesOutside(x: Float, y: Float): Boolean {
+        private fun checkCoordinatesOutside(y: Float): Boolean {
             return getChildAt(0).top > y
         }
 

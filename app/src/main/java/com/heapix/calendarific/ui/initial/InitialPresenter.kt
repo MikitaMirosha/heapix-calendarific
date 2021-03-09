@@ -9,7 +9,7 @@ import com.heapix.calendarific.net.repo.YearRepo
 import com.heapix.calendarific.net.responses.country.CountryResponse
 import com.heapix.calendarific.ui.base.BaseMvpPresenter
 import io.reactivex.Observable
-import org.joda.time.LocalDate
+import org.joda.time.DateTime
 import org.kodein.di.instance
 
 @InjectViewState
@@ -24,20 +24,20 @@ class InitialPresenter : BaseMvpPresenter<InitialView>() {
         checkIsoAndYearInStorage()
         setCurrentYearInStorage()
 
-        getCountriesAndUpdateUi()
-
         setupOnCountryItemClickListener(countryItemClickObservable)
     }
 
     private fun checkIsoAndYearInStorage() {
         if (areIsoAndYearInStorage()) {
             viewState.openNavigationActivity()
+        } else {
+            getCountriesAndUpdateUi()
         }
     }
 
     private fun setCurrentYearInStorage() {
-        yearRepo.saveYear(LocalDate().yearOfEra)
-        viewState.showChosenYear(LocalDate().yearOfEra)
+        yearRepo.saveYear(DateTime.now().yearOfEra)
+        viewState.showChosenYear(DateTime.now().yearOfEra)
     }
 
     private fun getCountriesAndUpdateUi() {
@@ -97,7 +97,7 @@ class InitialPresenter : BaseMvpPresenter<InitialView>() {
 
     fun onSelectYearClicked() = viewState.showYearList(yearRepo.getYear())
 
-    fun onNumberPickerScrolled(year: Int) {
+    fun onNumberPickerValueChanged(year: Int) {
         yearRepo.saveYear(year)
         viewState.showChosenYear(yearRepo.getYear())
     }
@@ -106,7 +106,7 @@ class InitialPresenter : BaseMvpPresenter<InitialView>() {
         if (areIsoAndYearInStorage()) {
             viewState.openNavigationActivity()
         } else {
-            showMessage(R.string.please_enter_full_data)
+            showMessage(R.string.please_fill_all_fields)
         }
     }
 

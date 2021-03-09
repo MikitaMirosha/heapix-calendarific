@@ -10,8 +10,7 @@ import io.reactivex.subjects.PublishSubject
 
 class HolidayAdapter : BaseListAdapter<HolidayResponse>() {
 
-    private val holidayPublishSubject: PublishSubject<HolidayResponse> =
-        PublishSubject.create()
+    private val holidayPublishSubject: PublishSubject<HolidayResponse> = PublishSubject.create()
 
     override fun onCreateViewHolder(
         parent: ViewGroup,

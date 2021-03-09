@@ -44,6 +44,7 @@ class BottomSheetLayoutWithBackground @kotlin.jvm.JvmOverloads constructor(
         bottomSheetLayout.setOnClickListener {
             hide()
         }
+
     }
 
     fun toggle() = bottomSheetLayout.toggle()

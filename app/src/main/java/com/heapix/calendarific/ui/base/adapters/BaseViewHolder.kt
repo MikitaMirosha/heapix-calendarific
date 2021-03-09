@@ -30,8 +30,6 @@ abstract class BaseViewHolder<in T>(view: View) : RecyclerView.ViewHolder(view),
         }
     }
 
-    fun addDisposable(disposable: Disposable) {}
-
     /**
      * Override this method to cancel any behaviour you don't want to continue after the view has been recycled
      * This is most likely async behaviour

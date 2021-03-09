@@ -35,10 +35,11 @@ class InitialActivity : BaseMvpActivity(), InitialView {
 
     companion object {
         private const val DELAY_MILLIS: Long = 2000
-        private const val MIN_VALUE: Int = 2000
-        private const val MAX_VALUE: Int = 2049
-        private const val SIZE: Int = 50
-        private const val FRICTION: Float = 0.02F
+
+        const val MIN_VALUE: Int = 2000
+        const val MAX_VALUE: Int = 2049
+        const val SIZE: Int = MAX_VALUE - MIN_VALUE + 1
+        const val FRICTION: Float = 0.02F
     }
 
     private fun initListeners() {
@@ -55,7 +56,7 @@ class InitialActivity : BaseMvpActivity(), InitialView {
         }
 
         vNumberPicker.setOnValueChangedListener { _, _, _ ->
-            initialPresenter.onNumberPickerScrolled(vNumberPicker.value)
+            initialPresenter.onNumberPickerValueChanged(vNumberPicker.value)
         }
 
         setupOnTextChangedListener()
@@ -92,15 +93,19 @@ class InitialActivity : BaseMvpActivity(), InitialView {
     }
 
     override fun onBackPressed() {
-        if (vCountryListBottomSheet.isExpanded()) {
-            vEtSearch.text.clear()
-            vEtSearch.clearFocus()
+        when {
+            vCountryListBottomSheet.isExpanded() -> {
+                vEtSearch.text.clear()
+                vEtSearch.clearFocus()
 
-            vCountryListBottomSheet.toggle()
-        } else if (vYearListBottomSheet.isExpanded()) {
-            vYearListBottomSheet.toggle()
-        } else {
-            onDoubleBackPressed()
+                vCountryListBottomSheet.toggle()
+            }
+            vYearListBottomSheet.isExpanded() -> {
+                vYearListBottomSheet.toggle()
+            }
+            else -> {
+                onDoubleBackPressed()
+            }
         }
     }
 
@@ -135,7 +140,7 @@ class InitialActivity : BaseMvpActivity(), InitialView {
     override fun hideYearList() = vYearListBottomSheet.toggle()
 
     override fun showChosenCountryName(countryName: String?) {
-        vTvSelectInitialCountry.text = countryName
+        vTvSelectInitialCountry.text = countryName ?: ""
     }
 
     override fun showChosenYear(year: Int) {

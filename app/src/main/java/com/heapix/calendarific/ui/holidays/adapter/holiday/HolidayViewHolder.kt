@@ -28,28 +28,28 @@ class HolidayViewHolder(
     }
 
     private fun setupHolidayName(holidayResponse: HolidayResponse) {
-        vTvHolidayName.text = holidayResponse.name
+        vTvHolidayName.text = holidayResponse.name ?: ""
     }
 
     private fun setupHolidayDate(holidayResponse: HolidayResponse) {
         val parser = DateTime(holidayResponse.date?.iso)
         val formatter = DateTimeFormat.forPattern(PATTERN)
-        vTvHolidayDate.text = parser.toString(formatter)
+        vTvHolidayDate.text = parser.toString(formatter) ?: ""
     }
 
     private fun setupHolidayDescription(holidayResponse: HolidayResponse) {
-        vTvHolidayDescription.text = holidayResponse.description
+        vTvHolidayDescription.text = holidayResponse.description ?: ""
     }
 
     private fun setupHolidayStatusImage(holidayResponse: HolidayResponse) {
         if (holidayResponse.isNotHolidayPassed) {
             Glide.with(context)
-                .load(holidayResponse.isNotHolidayPassed)
+                .load(R.drawable.ic_clock)
                 .placeholder(R.drawable.ic_clock)
                 .into(vIvHolidayStatus)
         } else {
             Glide.with(context)
-                .load(holidayResponse.isNotHolidayPassed)
+                .load(R.drawable.ic_checked)
                 .placeholder(R.drawable.ic_checked)
                 .into(vIvHolidayStatus)
         }

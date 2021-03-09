@@ -1,14 +1,10 @@
 package com.heapix.calendarific.ui.base
 
-import android.app.Activity
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
 import androidx.annotation.LayoutRes
-
 
 abstract class BaseMvpFragment : MvpFragment(),
     BaseMvpView {
@@ -44,18 +40,6 @@ abstract class BaseMvpFragment : MvpFragment(),
 
     override fun handleRestError(e: Throwable) {
         (activity as? BaseMvpActivity)?.handleRestError(e)
-    }
-
-    fun showKeyboard(view: View) {
-        val inputMethodManager: InputMethodManager =
-            context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        inputMethodManager.showSoftInput(view, 0)
-    }
-
-    fun hideKeyboard(view: View) {
-        val inputMethodManager: InputMethodManager =
-            context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
 }

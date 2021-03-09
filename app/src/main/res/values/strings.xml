@@ -10,7 +10,7 @@
     <string name="next">Next</string>
     <string name="country_double_dots">Country: </string>
     <string name="year_double_dots">Year: </string>
-    <string name="please_enter_full_data">Please, enter full data</string>
+    <string name="please_fill_all_fields">Please, fill all fields</string>
 
     <string name="home">home</string>
     <string name="calendar">calendar</string>

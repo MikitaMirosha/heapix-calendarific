@@ -94,14 +94,19 @@ class NavigationActivity : BaseMvpActivity() {
     }
 
     override fun onBackPressed() {
-        if (vCountryListHolidaysBottomSheet.isExpanded()) {
-            vEtSearch.text.clear()
-            vEtSearch.clearFocus()
-            vCountryListHolidaysBottomSheet.toggle()
-        } else if (vYearListHolidaysBottomSheet.isExpanded()) {
-            vYearListHolidaysBottomSheet.toggle()
-        } else {
-            onDoubleBackPressed()
+        when {
+            vCountryListHolidaysBottomSheet.isExpanded() -> {
+                vEtSearch.text.clear()
+                vEtSearch.clearFocus()
+
+                vCountryListHolidaysBottomSheet.toggle()
+            }
+            vYearListHolidaysBottomSheet.isExpanded() -> {
+                vYearListHolidaysBottomSheet.toggle()
+            }
+            else -> {
+                onDoubleBackPressed()
+            }
         }
     }
 

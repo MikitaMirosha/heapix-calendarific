@@ -17,7 +17,7 @@ class ApiRest {
 
         private const val BASE_URL: String = "https://calendarific.com/api/v2/"
         private const val API_KEY: String = "api_key"
-        private const val API_VALUE: String = "695c69c7414e935be7cc43d17666bbe916b62863"
+        private const val API_KEY_VALUE: String = "695c69c7414e935be7cc43d17666bbe916b62863"
         private const val TIMEOUT: Long = 10
 
         internal fun getApi(): Retrofit {
@@ -49,7 +49,7 @@ class ApiRest {
                         .newBuilder()
                         .addQueryParameter(
                             API_KEY,
-                            API_VALUE
+                            API_KEY_VALUE
                         )
                         .build()
                     request.url(url)

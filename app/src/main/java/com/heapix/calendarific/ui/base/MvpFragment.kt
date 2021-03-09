@@ -13,7 +13,7 @@ open class MvpFragment : Fragment() {
     /**
      * @return The [MvpDelegate] being used by this Fragment.
      */
-    val mvpDelegate: MvpDelegate<out MvpFragment>
+    private val mvpDelegate: MvpDelegate<out MvpFragment>
         get() {
             if (mMvpDelegate == null) {
                 mMvpDelegate = MvpDelegate(this)
